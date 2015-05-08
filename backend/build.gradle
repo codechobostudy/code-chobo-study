@@ -5,12 +5,17 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.8'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
     }
 }
 
 apply plugin: 'spring-boot'
 apply plugin: 'war'
 apply plugin: 'scala'
+
+apply plugin: 'net.saliman.cobertura'
+apply plugin: 'com.github.kt3k.coveralls'
 
 dependencies {
     compile 'org.scala-lang:scala-library:2.11.6'
@@ -26,7 +31,7 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     compile 'com.jayway.restassured:rest-assured:2.4.1'
     runtime 'net.sourceforge.nekohtml:nekohtml:1.9.21'
-    runtime 'org.codehaus.groovy:groovy-all:2.4.3'
+    compile 'org.codehaus.groovy:groovy-all:2.4.3'
 
 
     //webjars
@@ -50,6 +55,15 @@ sourceSets {
             srcDirs = ['src/test/scala']
         }
     }
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
+    coverageExcludes = ['.*common\\.RequireJSController.*'
+                        ,'.*config\\.SimpleCORSFilter.*'
+                        ,'.*config\\.WebConfig.*'
+                        ,'.*home\\.*controller\\.HomeController.*'
+                        ,'.*codechobostudy\\.Application.*']
 }
 
 
