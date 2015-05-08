@@ -1,4 +1,4 @@
-package io.codechobostudy.domain
+package io.codechobostudy.sample.domain
 
 import java.util.Date
 import javax.persistence._

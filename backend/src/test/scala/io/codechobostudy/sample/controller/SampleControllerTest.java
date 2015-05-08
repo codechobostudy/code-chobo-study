@@ -1,8 +1,8 @@
-package io.codechobostudy.controller;
+package io.codechobostudy.sample.controller;
 
-import io.codechobostudy.domain.SampleDomain;
-import io.codechobostudy.repository.SampleRepository;
-import io.codechobostudy.fixture.SampleBuilder;
+import io.codechobostudy.sample.domain.SampleDomain;
+import io.codechobostudy.sample.repository.SampleRepository;
+import io.codechobostudy.sample.fixture.SampleBuilder;
 import io.codechobostudy.Application;
 
 import org.apache.http.HttpStatus;

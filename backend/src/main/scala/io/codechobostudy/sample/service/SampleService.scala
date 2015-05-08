@@ -1,7 +1,7 @@
-package io.codechobostudy.service
+package io.codechobostudy.sample.service
 
-import io.codechobostudy.domain.SampleDomain
-import io.codechobostudy.repository.SampleRepository
+import io.codechobostudy.sample.domain.SampleDomain
+import io.codechobostudy.sample.repository.SampleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -1,8 +1,8 @@
-package io.codechobostudy.controller
+package io.codechobostudy.sample.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.codechobostudy.domain.SampleDomain
-import io.codechobostudy.service.SampleService
+import io.codechobostudy.sample.domain.SampleDomain
+import io.codechobostudy.sample.service.SampleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestMethod, RequestBody, RequestMapping, RestController}
 

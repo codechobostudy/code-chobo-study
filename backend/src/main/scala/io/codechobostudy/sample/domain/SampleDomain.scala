@@ -1,4 +1,4 @@
-package io.codechobostudy.domain
+package io.codechobostudy.sample.domain
 
 import javax.persistence.Entity
 import scala.beans.BeanProperty

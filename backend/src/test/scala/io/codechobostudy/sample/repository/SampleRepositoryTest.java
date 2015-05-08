@@ -1,10 +1,9 @@
-package io.codechobostudy.service;
+package io.codechobostudy.sample.repository;
 
 import io.codechobostudy.Application;
-import io.codechobostudy.domain.SampleDomain;
-import io.codechobostudy.repository.SampleRepository;
-import io.codechobostudy.fixture.SampleBuilder;
-import io.codechobostudy.service.SampleService;
+import io.codechobostudy.sample.domain.SampleDomain;
+import io.codechobostudy.sample.fixture.SampleBuilder;
+import io.codechobostudy.sample.repository.SampleRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,21 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @Transactional
-public class SampleServiceTest {
-
-    @Autowired
-    private SampleService sampleService;
+public class SampleRepositoryTest {
 
     @Autowired
     private SampleRepository sampleRepository;
 
-    private SampleDomain sampleDomain1;
+    SampleDomain sampleDomain1;
+    SampleDomain sampleDomain2;
 
     @Before
     public void setup(){
@@ -39,7 +35,13 @@ public class SampleServiceTest {
         sampleDomain1 = SampleBuilder
                 .anCategory()
                 .withCategoryName("Test")
-                .withCategoryDesc("Test Category")
+                .withCategoryDesc("Test sample")
+                .build();
+
+        sampleDomain2 = SampleBuilder
+                .anCategory()
+                .withCategoryName("Test2")
+                .withCategoryDesc("Test sample")
                 .build();
     }
 
@@ -48,7 +50,7 @@ public class SampleServiceTest {
     public void test_sample_save(){
 
         //when
-        SampleDomain resultSampleDomain = sampleService.create(sampleDomain1);
+        SampleDomain resultSampleDomain = sampleRepository.save(sampleDomain1);
 
         //then
         assertNotNull(resultSampleDomain.getId());
@@ -61,24 +63,27 @@ public class SampleServiceTest {
     public void test_sample_update(){
 
         //given
-        SampleDomain saveSampleDomain = sampleRepository.save(sampleDomain1);
-        saveSampleDomain.setCategoryName("Update Category");
+        SampleDomain sampleDomain = sampleRepository.save(sampleDomain1);
+        Long categoryId = sampleDomain.getId();
 
         //when
-        SampleDomain resultSampleDomain = sampleService.update(saveSampleDomain);
+        sampleDomain.setCategoryName("UpdateName");
+        sampleRepository.save(sampleDomain1);
 
         //then
-        assertThat(resultSampleDomain.getCategoryName(), is(saveSampleDomain.getCategoryName()));
+        assertThat(sampleDomain.getId(), is(categoryId));
+        assertThat(sampleDomain.getCategoryName(), is("UpdateName"));
     }
 
     @Test
-    public void test_get_all_sample(){
+    @Rollback
+    public void test_find_by_name_one(){
 
         //given
         sampleRepository.save(sampleDomain1);
 
         //when
-        List<SampleDomain> categories = sampleService.getAllCategory();
+        List<SampleDomain> categories = sampleRepository.findByCategoryName(sampleDomain1.getCategoryName());
 
         //then
         assertThat(categories.size(), is(1));

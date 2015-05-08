@@ -1,6 +1,6 @@
-package io.codechobostudy.domain;
+package io.codechobostudy.sample.domain;
 
-import io.codechobostudy.domain.SampleDomain;
+import io.codechobostudy.sample.domain.SampleDomain;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;

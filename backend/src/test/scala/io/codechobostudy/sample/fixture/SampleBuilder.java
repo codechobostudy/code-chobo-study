@@ -1,6 +1,6 @@
-package io.codechobostudy.fixture;
+package io.codechobostudy.sample.fixture;
 
-import io.codechobostudy.domain.SampleDomain;
+import io.codechobostudy.sample.domain.SampleDomain;
 
 public class SampleBuilder {
 

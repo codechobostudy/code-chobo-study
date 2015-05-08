@@ -1,6 +1,6 @@
-package io.codechobostudy.repository
+package io.codechobostudy.sample.repository
 
-import io.codechobostudy.domain.SampleDomain
+import io.codechobostudy.sample.domain.SampleDomain
 import org.springframework.data.jpa.repository.JpaRepository
 import java.lang.Long
 import java.util.List
