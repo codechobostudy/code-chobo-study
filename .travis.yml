@@ -5,6 +5,10 @@ script: "gradle build"
 branches:
   only:
     - develop
+env:
+  - TERM=dumb
+after_success:
+  - gradle cobertura coveralls
 notifications:
   slack: codechobostudy:7xxE3u0mOPli3DRz6cKiIz51
   email:
