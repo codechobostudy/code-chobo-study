@@ -1,0 +1,33 @@
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
+configurations {
+    providedRuntime
+}
+
+configure(allprojects) { project ->
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse-wtp'
+
+    sourceCompatibility = 1.8
+    compileJava.options.encoding = 'UTF-8'
+
+    configurations {
+        all*.exclude module: 'commons-logging'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}

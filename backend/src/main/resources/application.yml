@@ -1,0 +1,8 @@
+spring.thymeleaf.cache: false
+spring.template.cache: false
+spring.thymeleaf.mode: LEGACYHTML5
+
+webjars.requirejs.newModules:
+
+app:
+  version: de4db33f

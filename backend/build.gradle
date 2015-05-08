@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'scala'
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.6'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'com.h2database:h2'
+    compile 'com.zaxxer:HikariCP'
+    compile 'mysql:mysql-connector-java'
+    compile 'org.projectlombok:lombok:1.16.4'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'com.jayway.restassured:rest-assured:2.4.1'
+    runtime 'net.sourceforge.nekohtml:nekohtml:1.9.21'
+    runtime 'org.codehaus.groovy:groovy-all:2.4.3'
+
+
+    //webjars
+    compile 'org.webjars:jquery:1.11.3'
+    compile 'org.webjars:underscorejs:1.8.3'
+    compile 'org.webjars:backbonejs:1.1.2-4'
+    compile 'org.webjars:bootstrap:3.3.4'
+    compile 'org.webjars:requirejs:2.1.17'
+    compile 'org.webjars:webjars-locator:0.21'
+
+}
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala']
+        }
+    }
+    test {
+        scala {
+            srcDirs = ['src/test/scala']
+        }
+    }
+}
+
+
+war{
+    baseName = 'sample'
+    version = '1.0'
+}
+
+springBoot {
+    mainClass = 'io.codechobostudy.Application'
+}
