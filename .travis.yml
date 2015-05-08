@@ -6,5 +6,6 @@ branches:
   only:
     - develop
 notifications:
+  slack: codechobostudy:7xxE3u0mOPli3DRz6cKiIz51
   email:
     - changhwaoh.co@gmail.com
