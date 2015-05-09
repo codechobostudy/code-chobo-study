@@ -5,6 +5,7 @@ script: "gradle build"
 branches:
   only:
     - develop
+    - feature/study-cha
 env:
   - TERM=dumb
 after_success:
