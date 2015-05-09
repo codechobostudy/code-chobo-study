@@ -1,5 +1,5 @@
 # code-chobo-study
-[![Build Status](https://travis-ci.org/codechobostudy/code-chobo-study.svg?branch=develop)](https://travis-ci.org/codechobostudy/code-chobo-study)  
+[![Build Status](https://travis-ci.org/codechobostudy/code-chobo-study.svg?branch=develop)](https://travis-ci.org/codechobostudy/code-chobo-study)[![Coverage Status](https://coveralls.io/repos/codechobostudy/code-chobo-study/badge.svg?branch=develop)](https://coveralls.io/r/codechobostudy/code-chobo-study?branch=develop)    
 코드초보스터디 사이트 개편 프로젝트
 
 #### Requirement
