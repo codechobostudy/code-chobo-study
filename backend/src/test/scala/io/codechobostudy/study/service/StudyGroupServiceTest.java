@@ -4,6 +4,7 @@ import io.codechobostudy.Application;
 import io.codechobostudy.study.domain.StudyGroup;
 import io.codechobostudy.study.fixture.GroupFixtureBuilder;
 import io.codechobostudy.study.repository.StudyGroupRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,11 @@ public class StudyGroupServiceTest {
             .withGroupLeaderUserId("leader-userId2")
             .withGroupGoals("Java의 정석 완독")
             .withGroupDesc("java의 정석 완동하는 스터디");
+    }
+
+    @After
+    public void cleanUp(){
+        studyGroupRepository.deleteAll();
     }
 
     @Test
