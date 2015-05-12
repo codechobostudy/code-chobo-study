@@ -46,4 +46,24 @@ class StudyGroupService {
     val deleteGroup =studyGroupRepository.findOne(group.id)
     deleteGroup.groupStatus = "D"
   }
+
+  /**
+   * 그룹조회
+   *
+   * @param id
+   * @return
+   */
+  def showGroup(id: java.lang.Long) = {
+    val group = studyGroupRepository.findOne(id);
+    group
+  }
+
+  /**
+   * 그룹 전체 가져오기
+   */
+  def showGroupsAll() = {
+    val groups = studyGroupRepository.findAll()
+    groups
+  }
+
 }

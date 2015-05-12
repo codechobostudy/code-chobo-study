@@ -12,6 +12,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -87,4 +89,39 @@ public class StudyGroupServiceTest {
         StudyGroup result = studyGroupRepository.findOne(studyGroup.getId());
         assertThat(result.getGroupStatus(), is("D"));
     }
+
+    @Test
+    @Rollback
+    public void test_group_only_one_show(){
+
+        //given
+        StudyGroup studyGroup = groupFixtureBuilder.build();
+        studyGroup = studyGroupRepository.save(studyGroup);
+
+        //when
+        StudyGroup result = studyGroupService.showGroup(studyGroup.getId());
+
+        //then
+        assertThat(result.getId(), is(studyGroup.getId()));
+        assertThat(result.getGroupName(), is(studyGroup.getGroupName()));
+    }
+
+    @Test
+    @Rollback
+    public void test_group_all_show(){
+
+        //given
+        StudyGroup studyGroup1 = groupFixtureBuilder.build();
+        studyGroup1 = studyGroupRepository.save(studyGroup1);
+
+        StudyGroup studyGroup2 = groupFixtureBuilder.withGroupName("테스트2").build();
+        studyGroup2 = studyGroupRepository.save(studyGroup2);
+
+        //when
+        List<StudyGroup> result = studyGroupService.showGroupsAll();
+
+        //then
+        assertThat(result.size(), is(2));
+    }
+
 }
