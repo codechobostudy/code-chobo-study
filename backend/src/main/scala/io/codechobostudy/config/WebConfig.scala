@@ -32,7 +32,8 @@ class WebConfig extends WebMvcConfigurerAdapter {
     var cachePeriod: java.lang.Integer = null
     var useResourceCache = false
 
-    val locations = "classpath:static/"
+//    val locations = "classpath:static/"   // src
+    val locations = "classpath:/"           // dest: script url선언시 Intellij에서 따라가기가 되지 않음으로 임시변경
 
     if (isDevMode) {
       cachePeriod = 0

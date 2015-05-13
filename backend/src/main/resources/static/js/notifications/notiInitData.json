@@ -1,0 +1,29 @@
+{
+  "notiDataList": [
+    {
+      "contents": "jeonyb님이 sukkyu.oh님의 게시물에 댓글을 남겼습니다.",
+      "url": "http://localhost:8080/noti/main",
+      "module": "board"
+    },
+    {
+      "contents": "changhwaoh, urosaria님이 cdy212님의 게시물에 답변을 남겼습니다.",
+      "url": "http://localhost:8080/noti/main",
+      "module": "board"
+    },
+    {
+      "contents": "kangyong.choi님이 sam님의 게시물에 댓글을 남겼습니다.",
+      "url": "http://localhost:8080/noti/main",
+      "module": "board"
+    },
+    {
+      "contents": "writer0713님이 youngit 질문답변에 답변을 남겼습니다.",
+      "url": "http://localhost:8080/noti/main",
+      "module": "qna"
+    }
+  ],
+  "notiCnt": {
+    "totalCnt": "4",
+    "boardCnt": "3",
+    "qnaCnt": "1"
+  }
+}
