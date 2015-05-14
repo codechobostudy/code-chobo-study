@@ -6,6 +6,8 @@
 
     <script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
     <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 
     <script src="/static/js/notifications/notiMain.js"></script>
 </head>
@@ -16,6 +18,13 @@
             <a href="#">
                 <h3>Notifications Main</h3>
             </a>
+        </div>
+        <div>
+            <h6>Websocket status:
+                <span id="webSocketStatus">
+
+                </span>
+            </h6>
         </div>
 
         <ul class="nav nav-pills">
