@@ -1,4 +1,4 @@
-package io.codechobostudy.websocket.domain;
+package io.codechobostudy.example.websocket.domain;
 
 public class Greeting {
     private String content;
