@@ -1,8 +1,12 @@
 package io.codechobostudy.user.controller;
 
 import io.codechobostudy.user.domain.User;
+import io.codechobostudy.user.exception.BadRequestException;
+import io.codechobostudy.user.exception.ConflictException;
+import io.codechobostudy.user.exception.InternalServerErrorException;
 import io.codechobostudy.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
@@ -41,13 +45,11 @@ public class SignupController {
     @RequestMapping(value="/signup", method=RequestMethod.POST)
     public String signup(@Valid User userForm, BindingResult formBinding) {
         if (formBinding.hasErrors()) {
-            // TODO throw exception badrequest (http status 400)
-            return null;
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.toString());
         }
 
         if (userService.findByNickname(userForm.getNickname()) != null) {
-            // TODO throw exception conflict (http status 409)
-            return null;
+            throw new ConflictException(HttpStatus.CONFLICT.toString());
         }
         else {
             User user = userService.createUser(userForm);
@@ -57,8 +59,7 @@ public class SignupController {
                 // TODO redirect signup complete page
             }
 
-            // TODO throw internal error (http status 500)
-            return null;
+            throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
 
     }
