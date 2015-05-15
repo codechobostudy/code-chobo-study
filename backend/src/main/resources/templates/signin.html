@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!-- TWITTER SIGNIN -->
+<form id="tw_signin" th:action="@{/signin/twitter}" method="POST">
+    <button type="submit">Sign in with Twitter</button>
+</form>
+
+<!-- FACEBOOK SIGNIN -->
+<form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
+    <input type="hidden" name="scope" value="publish_stream,user_photos,offline_access" />
+    <button type="submit">Sign in with Facebook</button>
+</form>
+</body>
+</html>

@@ -1,14 +1,10 @@
-spring.thymeleaf.cache: false
 spring.template.cache: false
-spring.thymeleaf.mode: LEGACYHTML5
-
 webjars.requirejs.newModules:
 
 app:
   version: de4db33f
 
 spring.social:
-  auto_connection_views: true
   # SPRING SOCIAL FACEBOOK (FacebookAutoConfiguration)
   facebook:
     app-id: # your application's Facebook App ID
@@ -18,9 +14,13 @@ spring.social:
     app-id: # your application's Twitter App ID
     app-secret: # your application's Twitter App Secret
 
-#JPA
 spring:
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      format-sql: true
+

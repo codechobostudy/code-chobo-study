@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form id="signup" th:action="@{/signup}" method="post" th:object="${connectionKey}">
+    <div class="formInfo">
+        <div class="error" th:if="${#fields.hasErrors('*')}">Unable to sign up. Please fix the errors below and resubmit.</div>
+    </div>
+
+    <fieldset>
+        <label for="providerId">provider id</label>
+        <input type="text" name="providerId" th:value="${providerId}" /> <br>
+        <label for="userId">user id</label>
+        <input type="text" name="userId" th:value="${providerUserId}" /> <br>
+        <label for="nickname">nickname</label>
+        <input type="text" name="nickname" /> <br>
+    </fieldset>
+    <p><button type="submit">Sign Up</button></p>
+</form>
+</body>
+</html>
