@@ -65,8 +65,8 @@ public class StudyGroupControllerTest {
         StudyGroup paramStudyGroup = groupFixtureBuilder.build();
 
         given()
-            .contentType(contentType)
-            .body(paramStudyGroup)
+            .contentType("application/x-www-form-urlencoded; charset=utf-8")
+            .param("groupName", paramStudyGroup.getGroupName())
         .when()
             .post(apiPrefixUrl+"/")
         .then()

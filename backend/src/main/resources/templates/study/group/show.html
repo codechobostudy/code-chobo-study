@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Study Group</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+    <p th:text="${studyGroup.id}"></p>
+    <p th:text="${studyGroup.groupName}"></p>
+    <p th:text="${studyGroup.groupGoals}"></p>
+    <p th:text="${studyGroup.groupDesc}"></p>
+</body>
+</html>
