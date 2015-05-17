@@ -31,7 +31,7 @@ public class MockUserRepositoryTest {
         mockUserRepository.save(jinhyunUser);
         mockUserRepository.save(sukkyuohUser);
         mockUserRepository.save(changhwaohUser);
-        MockUser dbJinhyunUser = mockUserRepository.findOne(jinhyunId);
+        MockUser dbJinhyunUser = mockUserRepository.findOne(1);
         assertThat(jinhyunId, is(dbJinhyunUser.getUserId()));
     }
 }
