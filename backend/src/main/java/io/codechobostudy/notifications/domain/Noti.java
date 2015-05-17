@@ -55,14 +55,6 @@ public class Noti {
         this.toUserName = toUserName;
     }
 
-    public MockUser getUser() {
-        return users;
-    }
-
-    public void setUser(MockUser user) {
-        this.users = user;
-    }
-
     public String getToUserName() {
         return toUserName;
     }

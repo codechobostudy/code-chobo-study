@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MockUserRepository extends JpaRepository <MockUser, Integer> {
-
+    MockUser findByUserId(String userId);
 }

@@ -60,20 +60,11 @@ public class NotiRepositoryTest {
     */
     @Test
     public void insertNoti() {
-        String contents = "jeonyb님이 sukkyu.oh님의 게시물에 댓글을 남겼습니다.";
-        String url = "http://localhost:8080/noti/main";
-        String module = "board";
-        String toUserId = "id_Jinhyun";
-
-        Noti noti = new Noti();
-        noti.setContents(contents);
-        noti.setUrl(url);
-        noti.setModule(module);
-        noti.setToUserName(toUserId);
-
+        Noti noti = notiBuilder.buildNotiData(1);
         notiRepository.save(noti);
+
         Noti dbNoti = notiRepository.findOne(1);
-        assertThat(contents, is(dbNoti.getContents()));
+        assertThat(noti.getContents(), is(dbNoti.getContents()));
     }
 
     @Test
@@ -86,12 +77,9 @@ public class NotiRepositoryTest {
         assertThat(user.getUserId(), is(dbUser.getUserId()));
 
         // Insert into Noti
-        Noti noti1 = notiBuilder.buildNotiData(1);
-        noti1.setUser(dbUser);
+        Noti noti1 = notiBuilder.buildNotiData(1, dbUser);
+        Noti noti2 = notiBuilder.buildNotiData(2, dbUser);
         notiRepository.save(noti1);
-
-        Noti noti2 = notiBuilder.buildNotiData(2);
-        noti2.setUser(dbUser);
         notiRepository.save(noti2);
 
         Noti dbNoti1 = notiRepository.findOne(1);
@@ -110,43 +98,34 @@ public class NotiRepositoryTest {
         // Insert into User
         MockUser user1 = notiBuilder.buildUserData(1);
         mockUserRepository.save(user1);
-        MockUser user2 = notiBuilder.buildUserData(2);
-        mockUserRepository.save(user2);
+        mockUserRepository.save(notiBuilder.buildUserData(2));
 
-        MockUser dbUser = mockUserRepository.findOne(1);
+        MockUser dbUser = mockUserRepository.findByUserId(user1.getUserId());
 
         // Insert into Noti
-        Noti noti1 = notiBuilder.buildNotiData(1);
-        noti1.setUser(dbUser);
+        Noti noti1 = notiBuilder.buildNotiData(1, dbUser);
         notiRepository.save(noti1);
-
-        Noti noti2 = notiBuilder.buildNotiData(2);
-        noti2.setUser(dbUser);
-        notiRepository.save(noti2);
-
-        Noti noti4 = notiBuilder.buildNotiData(4);
-        noti4.setUser(dbUser);
-        notiRepository.save(noti4);
+        notiRepository.save(notiBuilder.buildNotiData(2, dbUser));
+        notiRepository.save(notiBuilder.buildNotiData(4, dbUser));
 
         List<Noti> dbNoti = notiRepository.findByUsers(dbUser);
 
         assertThat(dbNoti.size(), is(3));
-        assertThat(dbUser.getIdx(), is(dbNoti.get(0).getUser().getIdx()));
+        assertThat(noti1.getUsers().getUserId(), is(dbNoti.get(0).getUsers().getUserId()));
 
         // Insert into NotiCnt
         // Case 1. Db
         int totalCnt = notiRepository.countByUsers(dbUser);
         int boardCnt = notiRepository.countByUsersAndModule(dbUser, "board");
         int qnaCnt = notiRepository.countByUsersAndModule(dbUser, "qna");
+        // Case 2. Java
         assertThat(2, is(boardCnt));
         assertThat(1, is(qnaCnt));
-        // Case 2. Java
 
         NotiCnt notiCnt = new NotiCnt();
         notiCnt.setTotalCnt(totalCnt);
         notiCnt.setBoardCnt(boardCnt);
         notiCnt.setUser(dbUser);
-
         notiCntRepository.save(notiCnt);
 
         NotiCnt dbNotiCnt = notiCntRepository.findOne(1);
