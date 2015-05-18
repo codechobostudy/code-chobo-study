@@ -18,6 +18,7 @@ public class SampleBuilder {
 
     public SampleBuilder withCategoryDesc(String categoryDesc){
         this.categoryDesc = categoryDesc;
+        this.categoryDesc = categoryDesc;
         return this;
     }
 
