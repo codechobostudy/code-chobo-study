@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,13 @@ public class NotiController {
     @ResponseBody
     public String webSocketPushData() throws Exception {
         this.simpMsgTemplate.convertAndSend("/subscribe/notiData", notiService.getNotiView());
+        return "success";
+    }
+
+    @RequestMapping(value = "/call/relayNoti")
+    @ResponseBody
+    public String relayNoti(@RequestParam(value = "data", required = false) String data) {
+        notiService.relayNoti("");
         return "success";
     }
 }
