@@ -16,12 +16,38 @@ public class BoardService {
     private BoardRepository boardRepository;
 
 
-    public Board create(Board board){
-        return boardRepository.save(board);
+    public Long boardCreate(Board board){
+        boardRepository.save(board);
+        return board.getId();
     }
 
-    public List<Board> getList(){
+    public List<Board> boardList(){
         return  boardRepository.findAll();
+    }
+
+    public Board boardShow(Board board){
+        return boardRepository.findOne(board.getId());
+    }
+
+    public Long boardUpdate(Board board){
+
+        Board findOneBoard = boardRepository.findOne(board.getId());
+
+        board.setId(findOneBoard.getId());
+
+        boardRepository.save(board);
+
+        return board.getId();
+    }
+
+    public void boardDelete(Board board){
+
+        Board findOneBoard = boardRepository.findOne(board.getId());
+
+        board.setStatus("D");
+        board.setId(findOneBoard.getId());
+
+        boardRepository.save(board);
     }
 
 }
