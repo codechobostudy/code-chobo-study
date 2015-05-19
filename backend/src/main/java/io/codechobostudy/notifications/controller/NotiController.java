@@ -1,5 +1,6 @@
 package io.codechobostudy.notifications.controller;
 
+import io.codechobostudy.notifications.repository.MockNotiRepository;
 import io.codechobostudy.notifications.service.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -16,9 +17,12 @@ public class NotiController {
     private SimpMessagingTemplate simpMsgTemplate;
     @Autowired
     private NotiService notiService;
+    @Autowired
+    private MockNotiRepository mockNotiRepository;
 
     @RequestMapping(value="/main")
     public ModelAndView main(){
+        mockNotiRepository.insertInitData();
         return new ModelAndView("/notifications/notiMain");
     }
 
