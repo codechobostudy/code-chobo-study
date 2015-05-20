@@ -22,9 +22,6 @@ public class User {
     @Column
     private String userId;
 
-    @NotNull
-    @NotEmpty
-    @Pattern(regexp = "(facebook|twitter)")
     @Column
     private String providerId;
 

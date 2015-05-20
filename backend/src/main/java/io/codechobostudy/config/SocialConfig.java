@@ -1,5 +1,7 @@
 package io.codechobostudy.config;
 
+import io.codechobostudy.user.adapter.SimpleSignInAdapter;
+import io.codechobostudy.user.repository.UsersConnectionRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -8,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
@@ -18,6 +21,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
@@ -33,17 +37,6 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class SocialConfig extends SocialConfigurerAdapter {
 
-    @Override
-    public UserIdSource getUserIdSource() {
-        return () -> {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null) {
-                throw new IllegalStateException("Unable to get a ConnectionRepository : no user signed in");
-            }
-            return authentication.getName();
-        };
-    }
-
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator,
                                                ConnectionRepository connectionRepository) {
@@ -54,11 +47,17 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Bean
     public SignInAdapter signInAdapter() {
-        return (String userId, Connection<?> connection, NativeWebRequest request) -> {
-            SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userId, null, null));
-            return null;
-        };
+        return new SimpleSignInAdapter(new HttpSessionRequestCache());
+    }
+
+    @Bean
+    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator,
+                                                             UsersConnectionRepository usersConnectionRepository,
+                                                             SignInAdapter signInAdapter) {
+        ProviderSignInController providerSignInController = new ProviderSignInController(connectionFactoryLocator,
+            usersConnectionRepository, signInAdapter);
+        // TODO change sessionStrategy (default HttpSession)
+        return providerSignInController;
     }
 
 }

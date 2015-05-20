@@ -12,6 +12,6 @@ public interface UserService {
 
     void save(User user);
 
-    User createUser(User user);
+    User createUser(User user, ConnectionKey connectionKey);
 
 }
