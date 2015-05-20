@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Study Group</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+<div th:each="data : ${studyList}">
+    <span th:text="${data.studyName}" ></span>
+</div>
+<form name="studyRegisterForm" method="POST" th:action="@{/study/main/}">
+    <p><input type="text" name="studyName" placeholder="그룹명"/></p>
+    <p><input type="text" name="studyDesc" placeholder="그룹설명"/></p>
+    <button type="submit">확인</button>
+</form>
+</body>
+</html>
