@@ -1,10 +1,11 @@
 var notiInit = function(){
-    var urlNotiInitData = "/static/js/notifications/notiInitData.json";
-    $.getJSON(urlNotiInitData)
-        .done(function(json){
+    $.ajax({
+        url:'/noti/getNotiData',
+        dataType: 'json',
+        success: function(json){
             showData(json);
-        })
-        .fail(function(textStatus) {
+        },
+        error: function(textStatus) {
             var aElement = document.createElement("a");
             aElement.className="list-group-item";
             aElement.href="#";
@@ -13,8 +14,8 @@ var notiInit = function(){
             aElement.appendChild(textNode);
 
             $("#notiData").append(aElement);
-        });
-
+        }
+    });
     connect();
 };
 

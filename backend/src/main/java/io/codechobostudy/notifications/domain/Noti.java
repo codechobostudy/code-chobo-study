@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="NOTI")
-public class Noti {
+public class Noti implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int notiNo;
@@ -73,5 +73,9 @@ public class Noti {
 
     public void setUsers(MockUser users) {
         this.users = users;
+    }
+
+    public Noti clone()throws CloneNotSupportedException{
+        return (Noti) super.clone();
     }
 }

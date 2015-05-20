@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="NOTI_CNT")
-public class NotiCnt {
+public class NotiCnt implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int notiCntIdx;
@@ -70,5 +70,9 @@ public class NotiCnt {
 
     public void setUser(MockUser user) {
         this.user = user;
+    }
+
+    public NotiCnt clone()throws CloneNotSupportedException{
+        return (NotiCnt) super.clone();
     }
 }

@@ -1,5 +1,6 @@
 package io.codechobostudy.notifications.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.codechobostudy.notifications.repository.MockNotiRepository;
 import io.codechobostudy.notifications.service.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,31 @@ public class NotiController {
     @Autowired
     private MockNotiRepository mockNotiRepository;
 
+    @RequestMapping(value="/init")
+    @ResponseBody
+    public String insertInitData(){
+        // TODO: 서버 가동시 메소드 실행시킬수 있는 방법은?
+        mockNotiRepository.insertInitData();
+        return "Success Insert InitData";
+    }
+
     @RequestMapping(value="/main")
     public ModelAndView main(){
-        mockNotiRepository.insertInitData();
         return new ModelAndView("/notifications/notiMain");
+    }
+
+    @RequestMapping(value = "/getNotiData")
+    @ResponseBody
+    public String getNotiData() {
+        String notiData = "";
+        try {
+            notiData = notiService.getNotiData();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return notiData;
     }
 
     @RequestMapping(value = "/sample/pushData")

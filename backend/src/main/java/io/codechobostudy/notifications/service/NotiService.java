@@ -1,5 +1,6 @@
 package io.codechobostudy.notifications.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
@@ -150,5 +151,42 @@ public class NotiService {
             simpMsgTemplate.convertAndSend("/subscribe/notiData", notiView);
             System.out.println("Data Check");
         }
+    }
+
+    public String getNotiData() throws JsonProcessingException, CloneNotSupportedException {
+        MockUser user = mockUserRepository.findByUserId("id_Jinhyun");
+        // ... get session UserInfo
+
+        // ... data가 없는 경우
+
+        List<Noti> notiList = lazilyError_Noti(notiRepository.findByUsers(user));
+        NotiCnt notiCnt = lazilyError_NotiCnt(notiCntRepository.findByUser(user));
+        notiCnt.setUser(null);
+
+        NotiView notiView = new NotiView();
+        notiView.setNotiList(notiList);
+        notiView.setNotiCnt(notiCnt);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.writeValueAsString(notiView);
+    }
+
+    // Jpa 오류 해결방안 필요
+    public List<Noti> lazilyError_Noti(List<Noti> dbNotiList) throws CloneNotSupportedException {
+        List<Noti> notiList = new ArrayList<>();
+        for (Noti dbNoti : dbNotiList){
+            Noti noti = dbNoti.clone();     // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+            noti.setUsers(null);
+            notiList.add(noti);
+        }
+        return notiList;
+    }
+
+    // Jpa 오류 해결방안 필요
+    public NotiCnt lazilyError_NotiCnt(NotiCnt dbNotiCnt) throws CloneNotSupportedException {
+        NotiCnt notiCnt = dbNotiCnt.clone();    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+        notiCnt.setUser(null);
+        return notiCnt;
     }
 }
