@@ -6,6 +6,7 @@ import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.service.MockUserService;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiView;
+import io.codechobostudy.notifications.repository.MockNotiBuilder;
 import io.codechobostudy.notifications.repository.MockNotiViewRepository;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
@@ -32,7 +33,7 @@ public class NotiTest {
     private NotiService notiService;
 
     @Autowired
-    private NotiBuilder notiBuilder;
+    private MockNotiBuilder notiBuilder;
 
     @Autowired
     private MockUserService mockUserService;
@@ -59,12 +60,12 @@ public class NotiTest {
     }
 
     @Test
-    public void testRelayNoti(){
+    public void testRelayNoti() throws CloneNotSupportedException {
         notiService.relayNoti("");
     }
 
     @Test
-    public void testRegisterNotiUsers(){
+    public void testRegisterNotiUsers() throws CloneNotSupportedException {
         // given
         MockUser insertedUser = mockUserService.insertUser(notiBuilder.buildUserData(1));
         Noti notiData = notiBuilder.buildNotiData(1);
@@ -81,7 +82,7 @@ public class NotiTest {
     }
 
     @Test
-    public void testPushUpdatedData(){
+    public void testPushUpdatedData() throws CloneNotSupportedException {
         // given
         MockUser insertedUser = mockUserService.insertUser(notiBuilder.buildUserData(1));
         Noti notiData = notiBuilder.buildNotiData(1);

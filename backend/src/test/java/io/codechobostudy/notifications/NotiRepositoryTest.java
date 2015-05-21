@@ -5,6 +5,7 @@ import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
+import io.codechobostudy.notifications.repository.MockNotiBuilder;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +34,7 @@ public class NotiRepositoryTest {
     private MockUserRepository mockUserRepository;
 
     @Autowired
-    private NotiBuilder notiBuilder;
+    private MockNotiBuilder notiBuilder;
 
     /*
     Service
@@ -132,5 +135,29 @@ public class NotiRepositoryTest {
         assertThat(totalCnt, is(dbNotiCnt.getTotalCnt()));
 
         System.out.println("Data Check");
+    }
+
+    @Test
+    public void jpaPermanenceExample() throws CloneNotSupportedException {
+        Noti noti = new Noti("This is contents");
+
+        List<MockUser> userList = new ArrayList<>();
+        userList.add(new MockUser("elsa"));
+        userList.add(new MockUser("olaf"));
+
+        // Case 1. Success
+        for(MockUser user: userList){
+            Noti cloneNoti = noti.clone();
+            notiRepository.save(cloneNoti);
+        }
+        assertThat(2, is(notiRepository.findAll().size()));
+
+        // Case 2. Fail
+        for(MockUser user: userList){
+            notiRepository.save(noti);
+            /* 2번째 인덱스부터는 Insert 되지 않음
+               객체를 저장하게되면 그 객체 또한 Hibernate Entity로 변경되는듯함 */
+        }
+        assertThat(4, is(notiRepository.findAll().size()));
     }
 }

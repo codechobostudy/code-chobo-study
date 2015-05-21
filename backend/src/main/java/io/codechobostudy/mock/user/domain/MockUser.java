@@ -8,7 +8,13 @@ import java.util.List;
 
 @Entity
 @Table(name="USER")
-public class MockUser {
+public class MockUser implements Cloneable {
+    public MockUser(){}
+
+    public MockUser(String userName) {
+        this.userName = userName;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
@@ -21,13 +27,6 @@ public class MockUser {
 
     @OneToMany(mappedBy="users", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     List<Noti> notiList = new ArrayList<>();
-
-    public MockUser(){}
-
-    public MockUser(String userId, String userName) {
-        this.userId = userId;
-        this.userName = userName;
-    }
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -59,5 +58,9 @@ public class MockUser {
 
     public void setNotiList(List<Noti> notiList) {
         this.notiList = notiList;
+    }
+
+    public MockUser clone()throws CloneNotSupportedException{
+        return (MockUser) super.clone();
     }
 }

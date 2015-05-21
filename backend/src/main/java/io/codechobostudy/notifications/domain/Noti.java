@@ -7,6 +7,12 @@ import javax.persistence.*;
 @Entity
 @Table(name="NOTI")
 public class Noti implements Cloneable {
+    public Noti() {}
+
+    public Noti(String contents) {
+        this.contents = contents;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int notiNo;
@@ -19,9 +25,6 @@ public class Noti implements Cloneable {
 
     @Column
     private String module;
-
-    @Column
-    private String toUserName;
 
     @ManyToOne
     @JoinColumn(name="USER_IDX")
@@ -49,14 +52,6 @@ public class Noti implements Cloneable {
 
     public String getModule() {
         return module;
-    }
-
-    public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
-    }
-
-    public String getToUserName() {
-        return toUserName;
     }
 
     public int getNotiNo() {

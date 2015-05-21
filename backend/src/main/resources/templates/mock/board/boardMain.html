@@ -25,6 +25,21 @@
 
                 $("#answerDiv").append(horizoneLine);
                 $("#answerDiv").append(div);
+
+                var formData = {
+                    module: "board",
+                    primaryKey: "1"
+                };
+
+                $.ajax({
+                    url: "/noti/call/relayNoti",
+                    method: "post",
+                    type: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData)
+                }).done(function(data){
+                    console.log(data);
+                });
             });
         }
     </script>

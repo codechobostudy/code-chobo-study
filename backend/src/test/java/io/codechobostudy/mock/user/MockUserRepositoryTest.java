@@ -20,18 +20,14 @@ public class MockUserRepositoryTest {
 
     @Test
     public void insertMockUser() {
-        String jinhyunId = "id_Jinhyun";
-        String sukkyuohId = "id_Sukkyuoh";
-        String changhwaohId = "id_Changhwaoh";
-
-        MockUser jinhyunUser = new MockUser(jinhyunId, "jinhyun");
-        MockUser sukkyuohUser = new MockUser(sukkyuohId, "sukkyu.oh");
-        MockUser changhwaohUser = new MockUser(changhwaohId, "changhwaoh");
+        MockUser jinhyunUser = new MockUser("jinhyun");
+        MockUser sukkyuohUser = new MockUser("sukkyu.oh");
+        MockUser changhwaohUser = new MockUser("changhwaoh");
 
         mockUserRepository.save(jinhyunUser);
         mockUserRepository.save(sukkyuohUser);
         mockUserRepository.save(changhwaohUser);
         MockUser dbJinhyunUser = mockUserRepository.findOne(1);
-        assertThat(jinhyunId, is(dbJinhyunUser.getUserId()));
+        assertThat("jinhyun", is(dbJinhyunUser.getUserName()));
     }
 }

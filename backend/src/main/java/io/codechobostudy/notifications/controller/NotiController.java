@@ -1,13 +1,14 @@
 package io.codechobostudy.notifications.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.codechobostudy.notifications.domain.RelayNoti;
 import io.codechobostudy.notifications.repository.MockNotiRepository;
 import io.codechobostudy.notifications.service.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,10 +56,15 @@ public class NotiController {
         return "success";
     }
 
+    // url이 마음에 안드네..
     @RequestMapping(value = "/call/relayNoti")
     @ResponseBody
-    public String relayNoti(@RequestParam(value = "data", required = false) String data) {
-        notiService.relayNoti("");
+    public String relayNoti(@RequestBody RelayNoti relayNoti) {
+        try {
+            notiService.relayNoti("");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         return "success";
     }
 }

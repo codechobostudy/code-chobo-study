@@ -53,7 +53,7 @@ public class NotiService {
     private MockNotiBuilder notiBuilder;
 
     // 알림 중계 서비스
-    public void relayNoti(String jsonData){
+    public void relayNoti(String jsonData) throws CloneNotSupportedException {
         /*
         ... jsonData to relayNoti Domain
             String module
@@ -65,7 +65,7 @@ public class NotiService {
         ... module의 pk로 데이터 검색후 Noti Object에 저장
             noti =
         */
-        // TODO: temp Methord (not exist jsonData)
+        // TODO: temp Method (not exist jsonData)
         noti = notiBuilder.buildNotiData(4);
 
         List <MockUser> watchUserList = new ArrayList<>();
@@ -74,7 +74,7 @@ public class NotiService {
             watchUserList =
          */
 
-        // TODO: temp Method (not exist Watch Table)
+        // TODO: temp Method (not exist Watch Table) - watch 구현전까지 등록되어있는 모든 사용자에게 알림처리
         watchUserList = mockUserRepository.findAll();
 
         List <NotiView> notiViewList = registerNotiUsers(noti, watchUserList);
@@ -82,14 +82,16 @@ public class NotiService {
     }
 
     // 알림관련 정보 저장
-    public List <NotiView> registerNotiUsers(Noti noti, List<MockUser> watchUserList) {
+    public List <NotiView> registerNotiUsers(Noti paramNoti, List<MockUser> watchUserList) throws CloneNotSupportedException {
         List <NotiView> resultNotiViewList = new ArrayList<>();
 
         for (MockUser user : watchUserList){
-            noti.setUsers(user);            // 데이터에 유저정보를 넣는다.
-            notiRepository.save(noti);      // 노티에 저장 / save to noti
+            Noti noti = paramNoti.clone();
+            noti.setUsers(user);
 
-            int totalCnt = notiRepository.countByUsers(user);   // 노티에서 읽지않은 카운트 검색 / getNoReadCnt(user) from noti
+            notiRepository.save(noti);
+
+            int totalCnt = notiRepository.countByUsers(user);
             int boardCnt = notiRepository.countByUsersAndModule(user, "board");
             int qnaCnt = notiRepository.countByUsersAndModule(user, "qna");
 
@@ -104,9 +106,9 @@ public class NotiService {
             notiCnt.setUser(user);
 
             if (dbNotiCnt != null) {
-                notiCntRepository.saveAndFlush(notiCnt);    // 노티카운트에 카운트 수정 / updateCnt(user) to notiCnt
+                notiCntRepository.saveAndFlush(notiCnt);
             } else {
-                notiCntRepository.save(notiCnt);    // 노티카운트에 카운트 수정 / updateCnt(user) to notiCnt
+                notiCntRepository.save(notiCnt);
             }
 
             NotiView notiView = new NotiView();
@@ -118,34 +120,20 @@ public class NotiService {
         return resultNotiViewList;
     }
 
-    public void pushUpdatedData(List<MockUser> watchUserList) {
+    public void pushUpdatedData(List<MockUser> watchUserList) throws CloneNotSupportedException {
         for (MockUser user : watchUserList){
+            if (!user.getUserId().equals("id_Jinhyun")){
+                continue;
+            }
             List <Noti> dbNotiList = notiRepository.findByUsers(user);
             NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
 
-            /*
-            problem message:
-                failed to lazily initialize a collection of role
-                io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
-                    io.codechobostudy.notifications.domain.NotiView["notiList"]
-                    io.codechobostudy.notifications.domain.Noti["users"]
-
-                io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
-                    io.codechobostudy.notifications.domain.NotiView["notiCnt"]
-                    io.codechobostudy.notifications.domain.NotiCnt["user"]
-             */
-            // Temp Solution Start
-            List <Noti> notiList = new ArrayList<>();
-            for (Noti noti : dbNotiList){
-                noti.setUsers(null);
-                notiList.add(noti);
-            }
-            dbNotiCnt.setUser(null);
-            // Temp Solution End
+            List<Noti> notiList = lazilyError_NotiList(dbNotiList);
+            NotiCnt notiCnt = lazilyError_NotiCnt(dbNotiCnt);
 
             NotiView notiView = new NotiView();
-            notiView.setNotiList(dbNotiList);
-            notiView.setNotiCnt(dbNotiCnt);
+            notiView.setNotiList(notiList);
+            notiView.setNotiCnt(notiCnt);
 
 //            this.simpMsgTemplate.convertAndSend("/subscribe/notiData/" + user.getUserId(), notiView);
             simpMsgTemplate.convertAndSend("/subscribe/notiData", notiView);
@@ -159,7 +147,7 @@ public class NotiService {
 
         // ... data가 없는 경우
 
-        List<Noti> notiList = lazilyError_Noti(notiRepository.findByUsers(user));
+        List<Noti> notiList = lazilyError_NotiList(notiRepository.findByUsers(user));
         NotiCnt notiCnt = lazilyError_NotiCnt(notiCntRepository.findByUser(user));
         notiCnt.setUser(null);
 
@@ -172,8 +160,19 @@ public class NotiService {
         return objectMapper.writeValueAsString(notiView);
     }
 
+    /*
+    problem message:
+    failed to lazily initialize a collection of role
+    io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
+        io.codechobostudy.notifications.domain.NotiView["notiList"]
+        io.codechobostudy.notifications.domain.Noti["users"]
+
+    io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
+        io.codechobostudy.notifications.domain.NotiView["notiCnt"]
+        io.codechobostudy.notifications.domain.NotiCnt["user"]
+    */
     // Jpa 오류 해결방안 필요
-    public List<Noti> lazilyError_Noti(List<Noti> dbNotiList) throws CloneNotSupportedException {
+    public List<Noti> lazilyError_NotiList(List<Noti> dbNotiList) throws CloneNotSupportedException {
         List<Noti> notiList = new ArrayList<>();
         for (Noti dbNoti : dbNotiList){
             Noti noti = dbNoti.clone();     // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생

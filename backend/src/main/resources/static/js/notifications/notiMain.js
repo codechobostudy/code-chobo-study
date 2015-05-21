@@ -20,6 +20,8 @@ var notiInit = function(){
 };
 
 var showData = function(notiJsonData){
+    $("#notiData").children().remove();
+
     var notiList = notiJsonData.notiList;
     for (var i in notiList){
         var aElement = document.createElement("a");
