@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/CCS
+    username: user
+    password: user
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    database: mysql
+    sql: true
+    hibernate:
+      ddl-auto: create-drop
