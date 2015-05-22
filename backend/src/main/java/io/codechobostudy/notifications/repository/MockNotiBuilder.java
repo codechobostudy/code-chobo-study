@@ -6,6 +6,30 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MockNotiBuilder {
+    public enum Module {
+        BOARD("board"), QNA("qna");
+        private String value;
+        private Module(String value){
+            this.value = value;
+        }
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public void validModule(String paramModule) {
+        boolean existModule = false;
+        for (Module module : Module.values()){
+            if (module.value == paramModule){
+                existModule = true;
+                break;
+            }
+        }
+        if (!existModule){
+            throw new IllegalArgumentException();
+        }
+    }
+
     public MockUser buildUserData(int dataIdx) {
         MockUser user = new MockUser();
         if (dataIdx == 1) {
@@ -20,37 +44,39 @@ public class MockNotiBuilder {
         return user;
     }
 
-    public Noti buildNotiData(int dataIdx){
-        return getNotiData(dataIdx);
+    public Noti buildNotiData(int dataIdx, String module){
+        validModule(module);
+        return getNotiData(dataIdx, module);
     }
 
-    public Noti buildNotiData(int dataIdx, MockUser user){
-        Noti noti = getNotiData(dataIdx);
+    public Noti buildNotiData(int dataIdx, String module, MockUser user){
+        validModule(module);
+        Noti noti = getNotiData(dataIdx, module);
         noti.setUsers(user);
         return noti;
     }
 
-    private Noti getNotiData(int dataIdx){
+    private Noti getNotiData(int dataIdx, String module){
         Noti noti = new Noti();
         if (dataIdx == 1){
-            noti.setModule("board");
+            noti.setModule(module);
             noti.setContents("jeonyb님이 sukkyu.oh님의 게시물에 댓글을 남겼습니다.");
             noti.setUrl("http://localhost:8080/noti/main");
         } else if (dataIdx == 2){
-            noti.setModule("board");
+            noti.setModule(module);
             noti.setContents("changhwaoh, urosaria님이 cdy212님의 게시물에 답변을 남겼습니다.");
             noti.setUrl("http://localhost:8080/noti/main");
         } else if (dataIdx == 3){
-            noti.setModule("board");
+            noti.setModule(module);
             noti.setContents("kangyong.choi님이 sam님의 게시물에 댓글을 남겼습니다.");
             noti.setUrl("http://localhost:8080/noti/main");
         } else if (dataIdx == 4){
-            noti.setModule("qna");
+            noti.setModule(module);
             noti.setContents(">> writer0713님이 youngit 질문답변에 답변을 남겼습니다.");
             noti.setUrl("http://localhost:8080/noti/main");
 
         } else if (dataIdx == 10){
-            noti.setModule("qna");
+            noti.setModule(module);
             noti.setContents("sam님이 kangyong.choi 질문답변에 답변을 남겼습니다.");
             noti.setUrl("http://localhost:8080/noti/main");
         } else {

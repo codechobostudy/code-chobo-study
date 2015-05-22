@@ -52,6 +52,6 @@ public class NotiServiceTest {
         NotiView notiView = objectMapper.readValue(jsonStr, NotiView.class);
 
         // then
-        assertThat(notiBuilder.buildNotiData(1).getContents(), is(notiView.getNotiList().get(0).getContents()));
+        assertThat(notiBuilder.buildNotiData(1, "board").getContents(), is(notiView.getNotiList().get(0).getContents()));
     }
 }

@@ -37,10 +37,11 @@ public class MockNotiService {
         MockUser user1 = mockUserRepository.findByUserId(notiBuilder.buildUserData(1).getUserId());
         MockUser user2 = mockUserRepository.findByUserId(notiBuilder.buildUserData(2).getUserId());
 
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(1), user1));
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(2), user1));
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(3), user1));
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(10), user2));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(1, "board"), user1));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(2, "board"), user1));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(3, "board"), user1));
+        
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(10, "qna"), user2));
 
         return notiList;
     }

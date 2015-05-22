@@ -63,7 +63,7 @@ public class NotiRepositoryTest {
     */
     @Test
     public void insertNoti() {
-        Noti noti = notiBuilder.buildNotiData(1);
+        Noti noti = notiBuilder.buildNotiData(1, "board");
         notiRepository.save(noti);
 
         Noti dbNoti = notiRepository.findOne(1);
@@ -80,8 +80,8 @@ public class NotiRepositoryTest {
         assertThat(user.getUserId(), is(dbUser.getUserId()));
 
         // Insert into Noti
-        Noti noti1 = notiBuilder.buildNotiData(1, dbUser);
-        Noti noti2 = notiBuilder.buildNotiData(2, dbUser);
+        Noti noti1 = notiBuilder.buildNotiData(1, "board", dbUser);
+        Noti noti2 = notiBuilder.buildNotiData(2, "board", dbUser);
         notiRepository.save(noti1);
         notiRepository.save(noti2);
 
@@ -106,10 +106,10 @@ public class NotiRepositoryTest {
         MockUser dbUser = mockUserRepository.findByUserId(user1.getUserId());
 
         // Insert into Noti
-        Noti noti1 = notiBuilder.buildNotiData(1, dbUser);
+        Noti noti1 = notiBuilder.buildNotiData(1, "board", dbUser);
         notiRepository.save(noti1);
-        notiRepository.save(notiBuilder.buildNotiData(2, dbUser));
-        notiRepository.save(notiBuilder.buildNotiData(4, dbUser));
+        notiRepository.save(notiBuilder.buildNotiData(2, "board", dbUser));
+        notiRepository.save(notiBuilder.buildNotiData(4, "qna", dbUser));
 
         List<Noti> dbNoti = notiRepository.findByUsers(dbUser);
 

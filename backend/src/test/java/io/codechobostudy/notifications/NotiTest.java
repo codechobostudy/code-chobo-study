@@ -53,7 +53,7 @@ public class NotiTest {
     public void testRegisterNotiUsers() throws CloneNotSupportedException {
         // given
         MockUser insertedUser = mockUserService.insertUser(notiBuilder.buildUserData(1));
-        Noti notiData = notiBuilder.buildNotiData(1);
+        Noti notiData = notiBuilder.buildNotiData(1, "board");
 
         MockUser dbUser = mockUserService.getUserByUserId("id_Jinhyun");
         List <MockUser> watchUserList = new ArrayList<>();
@@ -70,7 +70,7 @@ public class NotiTest {
     public void testPushUpdatedData() throws CloneNotSupportedException {
         // given
         MockUser insertedUser = mockUserService.insertUser(notiBuilder.buildUserData(1));
-        Noti notiData = notiBuilder.buildNotiData(1);
+        Noti notiData = notiBuilder.buildNotiData(1, "board");
 
         MockUser dbUser = mockUserService.getUserByUserId("id_Jinhyun");
         List <MockUser> watchUserList = new ArrayList<>();

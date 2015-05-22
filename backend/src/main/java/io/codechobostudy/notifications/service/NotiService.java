@@ -45,7 +45,7 @@ public class NotiService {
             noti =
         */
         // TODO: temp Method (not exist jsonData)
-        noti = notiBuilder.buildNotiData(4);
+        noti = notiBuilder.buildNotiData(4, "qna");
 
         List <MockUser> watchUserList = new ArrayList<>();
         /*
