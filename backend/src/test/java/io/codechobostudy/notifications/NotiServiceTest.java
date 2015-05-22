@@ -5,9 +5,9 @@ import io.codechobostudy.Application;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.notifications.domain.NotiView;
 import io.codechobostudy.notifications.repository.MockNotiBuilder;
-import io.codechobostudy.notifications.repository.MockNotiRepository;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
+import io.codechobostudy.notifications.service.MockNotiService;
 import io.codechobostudy.notifications.service.NotiService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +36,15 @@ public class NotiServiceTest {
     private MockNotiBuilder notiBuilder;
 
     @Autowired
-    private MockNotiRepository mockNotiRepository;
+    private NotiService notiService;
 
     @Autowired
-    private NotiService notiService;
+    private MockNotiService mockNotiService;
 
     @Test
     public void testGetNotiData() throws IOException, CloneNotSupportedException {
         // given
-        mockNotiRepository.insertInitData();
+        mockNotiService.insertInitData_NotiAndNotiCnt();
         String jsonStr = notiService.getNotiData();
 
         // when

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Notification Admin</title>
+
+    <script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
+    <script type="application/javascript">
+        var fnGotoModule = function(moduleName){
+            window.open("/" + moduleName + "/main", "_blank");
+        };
+
+        var fnInsertData = function(moduleName){
+            $.ajax({
+                url: "/" + moduleName + "/insertInitData",
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        };
+
+        var fnDeleteData = function(moduleName){
+            $.ajax({
+                url: "/" + moduleName + "/deleteAllData",
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+    <div class="container theme-showcase">
+        <div class="row">
+            <div class="page-header">
+                <h3>Notification Admin</h3>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Insert
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <p>
+                                <button type="button" class="btn btn-success" onclick="fnInsertData('user');">Insert User Data</button>
+                            </p>
+                            <p>
+                                <button type="button" class="btn btn-primary" onclick="fnInsertData('noti');">Insert Noti Data</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Delete
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            <button type="button" class="btn btn-success" onclick="fnDeleteData('user');">Delete User Data</button>
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-primary" onclick="fnDeleteData('noti')">Delete Noti Data</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Page
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            <button type="button" class="btn btn-success" onclick="fnGotoModule('noti');">Go to User-Main</button>
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-primary" onclick="fnGotoModule('noti');">Go to Noti-Main</button>
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-info" onclick="fnGotoModule('board');">Go to Board-Main</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

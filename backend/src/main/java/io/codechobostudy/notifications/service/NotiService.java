@@ -7,10 +7,7 @@ import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
 import io.codechobostudy.notifications.domain.NotiView;
-import io.codechobostudy.notifications.repository.MockNotiBuilder;
-import io.codechobostudy.notifications.repository.MockNotiViewRepository;
-import io.codechobostudy.notifications.repository.NotiCntRepository;
-import io.codechobostudy.notifications.repository.NotiRepository;
+import io.codechobostudy.notifications.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -187,5 +184,10 @@ public class NotiService {
         NotiCnt notiCnt = dbNotiCnt.clone();    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
         notiCnt.setUser(null);
         return notiCnt;
+    }
+
+    public void deleteAllData() {
+        notiRepository.deleteAll();
+        notiCntRepository.deleteAll();
     }
 }

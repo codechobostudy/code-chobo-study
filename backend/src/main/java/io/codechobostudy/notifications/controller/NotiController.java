@@ -2,7 +2,7 @@ package io.codechobostudy.notifications.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.codechobostudy.notifications.domain.RelayNoti;
-import io.codechobostudy.notifications.repository.MockNotiRepository;
+import io.codechobostudy.notifications.service.MockNotiService;
 import io.codechobostudy.notifications.service.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,11 +20,30 @@ public class NotiController {
     @Autowired
     private NotiService notiService;
     @Autowired
-    private MockNotiRepository mockNotiRepository;
+    private MockNotiService mockNotiService;
 
     @RequestMapping(value="/main")
     public ModelAndView main(){
         return new ModelAndView("/notifications/notiMain");
+    }
+
+    @RequestMapping(value="/admin")
+    public ModelAndView admin(){
+        return new ModelAndView("/notifications/notiAdmin");
+    }
+
+    @RequestMapping(value = "/deleteAllData")
+    @ResponseBody
+    public String deleteAllData() {
+        notiService.deleteAllData();
+        return "success";
+    }
+
+    @RequestMapping(value = "/insertInitData")
+    @ResponseBody
+    public String insertInitData() {
+        mockNotiService.insertInitData_NotiAndNotiCnt();
+        return "success";
     }
 
     @RequestMapping(value = "/getNotiData")
