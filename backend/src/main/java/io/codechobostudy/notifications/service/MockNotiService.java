@@ -18,11 +18,12 @@ public class MockNotiService {
     @Autowired
     private MockUserRepository mockUserRepository;
     @Autowired
-    private MockNotiBuilder notiBuilder;
-    @Autowired
     private NotiRepository notiRepository;
     @Autowired
     private NotiCntRepository notiCntRepository;
+
+    @Autowired
+    private MockNotiBuilder notiBuilder;
 
     public void insertInitData_NotiAndNotiCnt() {
         insertInitData_Noti();

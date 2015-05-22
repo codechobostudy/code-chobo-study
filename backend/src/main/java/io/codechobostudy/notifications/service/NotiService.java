@@ -16,38 +16,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.IOException;
-
 @Service
 @Transactional
 public class NotiService {
     @Autowired
-    private MockNotiViewRepository mockNotiViewRepository;
-
-    @Autowired
     private NotiRepository notiRepository;
-
     @Autowired
     private NotiCntRepository notiCntRepository;
-
-    @Autowired
-    private SimpMessagingTemplate simpMsgTemplate;
-
     @Autowired
     private MockUserRepository mockUserRepository;
 
-    public NotiView getNotiView() {
-        return mockNotiViewRepository.getNotiView();
-    }
-
-    public String getNotiViewJsonString() throws IOException {
-        NotiView notiView = getNotiView();
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(notiView);
-    }
-
     @Autowired
     private MockNotiBuilder notiBuilder;
+    @Autowired
+    private SimpMessagingTemplate simpMsgTemplate;
 
     // 알림 중계 서비스
     public void relayNoti(String jsonData) throws CloneNotSupportedException {
@@ -134,7 +116,6 @@ public class NotiService {
 
 //            this.simpMsgTemplate.convertAndSend("/subscribe/notiData/" + user.getUserId(), notiView);
             simpMsgTemplate.convertAndSend("/subscribe/notiData", notiView);
-            System.out.println("Data Check");
         }
     }
 

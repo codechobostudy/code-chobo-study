@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class MockStartupListener implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private MockUserService mockUserService;
-
     @Autowired
     private MockNotiService mockNotiService;
 

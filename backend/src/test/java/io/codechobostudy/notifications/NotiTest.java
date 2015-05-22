@@ -1,13 +1,11 @@
 package io.codechobostudy.notifications;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codechobostudy.Application;
 import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.service.MockUserService;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiView;
 import io.codechobostudy.notifications.repository.MockNotiBuilder;
-import io.codechobostudy.notifications.repository.MockNotiViewRepository;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
 import io.codechobostudy.notifications.service.NotiService;
@@ -17,7 +15,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
@@ -46,18 +43,6 @@ public class NotiTest {
 
     @Autowired
     private SimpMessagingTemplate simpMsgTemplate;
-
-    @Test
-    public void testGetNotiViewJson() throws IOException {
-        String jsonString = notiService.getNotiViewJsonString();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        NotiView jsonObject = objectMapper.readValue(jsonString, NotiView.class);
-
-        assertThat(MockNotiViewRepository.firstContents, is(jsonObject.getNotiList().get(0).getContents()));
-        assertThat(MockNotiViewRepository.secondContents, is(jsonObject.getNotiList().get(1).getContents()));
-        assertThat(MockNotiViewRepository.totalCnt, is(jsonObject.getNotiCnt().getTotalCnt()));
-    }
 
     @Test
     public void testRelayNoti() throws CloneNotSupportedException {

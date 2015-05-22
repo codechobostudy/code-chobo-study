@@ -16,11 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value="/noti")
 public class NotiController {
     @Autowired
-    private SimpMessagingTemplate simpMsgTemplate;
-    @Autowired
     private NotiService notiService;
     @Autowired
     private MockNotiService mockNotiService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMsgTemplate;
 
     @RequestMapping(value="/main")
     public ModelAndView main(){
@@ -58,13 +59,6 @@ public class NotiController {
             e.printStackTrace();
         }
         return notiData;
-    }
-
-    @RequestMapping(value = "/sample/pushData")
-    @ResponseBody
-    public String webSocketPushData() throws Exception {
-        this.simpMsgTemplate.convertAndSend("/subscribe/notiData", notiService.getNotiView());
-        return "success";
     }
 
     // url이 마음에 안드네..
