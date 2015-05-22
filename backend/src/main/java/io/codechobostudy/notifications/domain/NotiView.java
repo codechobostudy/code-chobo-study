@@ -6,6 +6,13 @@ import java.util.List;
 
 // Todo: Page와 Json용으로 만들었는데 클래스의 용도가 명확하지 않아서 해결방안 필요
 public class NotiView {
+    public NotiView() {}
+
+    public NotiView(Noti noti, NotiCnt notiCnt) {
+        this.notiCnt = notiCnt;
+        this.noti = noti;
+    }
+
     private List<Noti> notiList;
     private NotiCnt notiCnt;
     private MockUser user;

@@ -24,39 +24,33 @@ public class MockNotiService {
 
     @Autowired
     private MockNotiBuilder notiBuilder;
+    @Autowired
+    private NotiService notiService;
 
-    public void insertInitData_NotiAndNotiCnt() {
+    public void insertInitData_NotiAndNotiCnt() throws CloneNotSupportedException {
         insertInitData_Noti();
         insertInitData_NotiCnt();
     }
 
-    public List<Noti> insertInitData_Noti() {
+    public List<Noti> insertInitData_Noti() throws CloneNotSupportedException {
         List<Noti> notiList = new ArrayList<>();
         MockUser user1 = mockUserRepository.findByUserId(notiBuilder.buildUserData(1).getUserId());
         MockUser user2 = mockUserRepository.findByUserId(notiBuilder.buildUserData(2).getUserId());
 
-        notiList.add(notiRepository.save(notiBuilder.buildNotiData(1, user1)));
-        notiList.add(notiRepository.save(notiBuilder.buildNotiData(2, user1)));
-        notiList.add(notiRepository.save(notiBuilder.buildNotiData(3, user1)));
-        notiList.add(notiRepository.save(notiBuilder.buildNotiData(10, user2)));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(1), user1));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(2), user1));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(3), user1));
+        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(10), user2));
 
         return notiList;
     }
 
-    public List<NotiCnt> insertInitData_NotiCnt() {
+    public List<NotiCnt> insertInitData_NotiCnt() throws CloneNotSupportedException {
         List<NotiCnt> notiCntList = new ArrayList<>();
-
-        List<MockUser> userList = new ArrayList<>();
-        userList.add(mockUserRepository.findByUserId(notiBuilder.buildUserData(1).getUserId()));
-        userList.add(mockUserRepository.findByUserId(notiBuilder.buildUserData(2).getUserId()));
+        List<MockUser> userList = mockUserRepository.findAll();
 
         for (MockUser user : userList){
-            NotiCnt notiCnt = new NotiCnt();
-            notiCnt.setTotalCnt(notiRepository.countByUsers(user));
-            notiCnt.setBoardCnt(notiRepository.countByUsersAndModule(user, "board"));
-            notiCnt.setQnaCnt(notiRepository.countByUsersAndModule(user, "qna"));
-            notiCnt.setUser(user);
-            notiCntList.add(notiCntRepository.save(notiCnt));
+            notiCntList.add(notiService.saveNotiCnt(user));
         }
         return notiCntList;
     }

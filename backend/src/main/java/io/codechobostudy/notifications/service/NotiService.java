@@ -61,42 +61,43 @@ public class NotiService {
     }
 
     // 알림관련 정보 저장
-    public List <NotiView> registerNotiUsers(Noti paramNoti, List<MockUser> watchUserList) throws CloneNotSupportedException {
-        List <NotiView> resultNotiViewList = new ArrayList<>();
+    public List <NotiView> registerNotiUsers(Noti noti, List<MockUser> watchUserList) throws CloneNotSupportedException {
+        List <NotiView> notiViewList = new ArrayList<>();
 
         for (MockUser user : watchUserList){
-            Noti noti = paramNoti.clone();
-            noti.setUsers(user);
+            Noti resultNoti = saveNoti(noti, user);
+            NotiCnt resultNotiCnt = saveNotiCnt(user);
 
-            notiRepository.save(noti);
-
-            int totalCnt = notiRepository.countByUsers(user);
-            int boardCnt = notiRepository.countByUsersAndModule(user, "board");
-            int qnaCnt = notiRepository.countByUsersAndModule(user, "qna");
-
-            NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
-            NotiCnt notiCnt = new NotiCnt();
-            if (dbNotiCnt != null) {
-                notiCnt.setNotiCntIdx(dbNotiCnt.getNotiCntIdx());
-            }
-            notiCnt.setTotalCnt(totalCnt);
-            notiCnt.setBoardCnt(boardCnt);
-            notiCnt.setQnaCnt(qnaCnt);
-            notiCnt.setUser(user);
-
-            if (dbNotiCnt != null) {
-                notiCntRepository.saveAndFlush(notiCnt);
-            } else {
-                notiCntRepository.save(notiCnt);
-            }
-
-            NotiView notiView = new NotiView();
-            notiView.setNotiCnt(notiCnt);
-            notiView.setNoti(noti);
-            resultNotiViewList.add(notiView);
+            notiViewList.add(new NotiView(resultNoti, resultNotiCnt));
         }
+        return notiViewList;
+    }
 
-        return resultNotiViewList;
+    public Noti saveNoti(Noti noti, MockUser user) throws CloneNotSupportedException {
+        Noti cloneNoti = noti.clone();
+        MockUser cloneUser = user.clone();
+        cloneNoti.setUsers(cloneUser);
+        return notiRepository.save(cloneNoti);
+    }
+
+    public NotiCnt saveNotiCnt(MockUser user) throws CloneNotSupportedException {
+        MockUser cloneUser = user.clone();
+        NotiCnt dbNotiCnt = notiCntRepository.findByUser(cloneUser);
+        boolean existDbNotiCnt = (dbNotiCnt != null) ? true : false;
+
+        NotiCnt notiCnt = new NotiCnt();
+        notiCnt.setTotalCnt(notiRepository.countByUsers(cloneUser));
+        notiCnt.setBoardCnt(notiRepository.countByUsersAndModule(cloneUser, "board"));
+        notiCnt.setQnaCnt(notiRepository.countByUsersAndModule(cloneUser, "qna"));
+        notiCnt.setUser(cloneUser);
+
+        if (existDbNotiCnt) {
+            notiCnt.setNotiCntIdx(dbNotiCnt.getNotiCntIdx());
+            notiCntRepository.saveAndFlush(notiCnt);
+        } else {
+            notiCntRepository.save(notiCnt);
+        }
+        return notiCnt;
     }
 
     public void pushUpdatedData(List<MockUser> watchUserList) throws CloneNotSupportedException {

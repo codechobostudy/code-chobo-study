@@ -43,7 +43,11 @@ public class NotiController {
     @RequestMapping(value = "/insertInitData")
     @ResponseBody
     public String insertInitData() {
-        mockNotiService.insertInitData_NotiAndNotiCnt();
+        try {
+            mockNotiService.insertInitData_NotiAndNotiCnt();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         return "success";
     }
 

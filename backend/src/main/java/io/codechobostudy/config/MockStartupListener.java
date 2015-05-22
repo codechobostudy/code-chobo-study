@@ -17,7 +17,11 @@ public class MockStartupListener implements ApplicationListener<ContextRefreshed
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
         System.out.println(">>> Noti Insert Init Data <<<");
-        mockUserService.insertInitData();
-        mockNotiService.insertInitData_NotiAndNotiCnt();
+        try {
+            mockUserService.insertInitData();
+            mockNotiService.insertInitData_NotiAndNotiCnt();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 }
