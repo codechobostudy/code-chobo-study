@@ -22,14 +22,6 @@ public class NotiController {
     @Autowired
     private MockNotiRepository mockNotiRepository;
 
-    @RequestMapping(value="/init")
-    @ResponseBody
-    public String insertInitData(){
-        // TODO: 서버 가동시 메소드 실행시킬수 있는 방법은?
-        mockNotiRepository.insertInitData();
-        return "Success Insert InitData";
-    }
-
     @RequestMapping(value="/main")
     public ModelAndView main(){
         return new ModelAndView("/notifications/notiMain");
