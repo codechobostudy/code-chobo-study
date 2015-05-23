@@ -28,7 +28,7 @@ public class Noti implements Cloneable {
 
     @ManyToOne
     @JoinColumn(name="USER_IDX")
-    private MockUser users;
+    private MockUser users;     // TODO: users > users로 변경
 
     public void setContents(String contents) {
         this.contents = contents;
@@ -68,9 +68,5 @@ public class Noti implements Cloneable {
 
     public void setUsers(MockUser users) {
         this.users = users;
-    }
-
-    public Noti clone()throws CloneNotSupportedException{
-        return (Noti) super.clone();
     }
 }

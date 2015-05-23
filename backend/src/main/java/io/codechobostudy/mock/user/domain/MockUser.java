@@ -59,8 +59,4 @@ public class MockUser implements Cloneable {
     public void setNotiList(List<Noti> notiList) {
         this.notiList = notiList;
     }
-
-    public MockUser clone()throws CloneNotSupportedException{
-        return (MockUser) super.clone();
-    }
 }

@@ -2,9 +2,6 @@ package io.codechobostudy.notifications.domain;
 
 import io.codechobostudy.mock.user.domain.MockUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -70,9 +67,5 @@ public class NotiCnt implements Cloneable {
 
     public void setUser(MockUser user) {
         this.user = user;
-    }
-
-    public NotiCnt clone()throws CloneNotSupportedException{
-        return (NotiCnt) super.clone();
     }
 }

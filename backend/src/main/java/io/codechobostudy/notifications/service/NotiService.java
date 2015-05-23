@@ -3,10 +3,14 @@ package io.codechobostudy.notifications.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codechobostudy.mock.user.domain.MockUser;
+import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
+import io.codechobostudy.mock.user.service.MockUserService;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
-import io.codechobostudy.notifications.domain.NotiView;
+import io.codechobostudy.notifications.dto.NotiCntDTO;
+import io.codechobostudy.notifications.dto.NotiDTO;
+import io.codechobostudy.notifications.dto.NotiViewDTO;
 import io.codechobostudy.notifications.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,6 +34,8 @@ public class NotiService {
     private MockNotiBuilder notiBuilder;
     @Autowired
     private SimpMessagingTemplate simpMsgTemplate;
+    @Autowired
+    private MockUserService mockUserService;
 
     // 알림 중계 서비스
     public void relayNoti(String jsonData) throws CloneNotSupportedException {
@@ -45,78 +51,97 @@ public class NotiService {
             noti =
         */
         // TODO: temp Method (not exist jsonData)
-        noti = notiBuilder.buildNotiData(4, "qna");
+        NotiDTO notiDTO = notiBuilder.buildNotiData(4, "qna");
 
-        List <MockUser> watchUserList = new ArrayList<>();
         /*
         ... watch 테이블에서 module의 pk가 등록되어있는 사용자 조회
             watchUserList =
          */
 
         // TODO: temp Method (not exist Watch Table) - watch 구현전까지 등록되어있는 모든 사용자에게 알림처리
-        watchUserList = mockUserRepository.findAll();
+        List <MockUserDTO> watchUserList = mockUserService.getUserList();
 
-        List <NotiView> notiViewList = registerNotiUsers(noti, watchUserList);
+        registerNotiUsers(notiDTO, watchUserList);
         pushUpdatedData(watchUserList);
     }
 
     // 알림관련 정보 저장
-    public List <NotiView> registerNotiUsers(Noti noti, List<MockUser> watchUserList) throws CloneNotSupportedException {
-        List <NotiView> notiViewList = new ArrayList<>();
+    public List <NotiViewDTO> registerNotiUsers(NotiDTO notiDTO, List<MockUserDTO> watchUserList) {
+        List <NotiViewDTO> notiViewDTOList = new ArrayList<>();
 
-        for (MockUser user : watchUserList){
-            Noti resultNoti = saveNoti(noti, user);
-            NotiCnt resultNotiCnt = saveNotiCnt(user);
+        for (MockUserDTO userDTO : watchUserList){
+            NotiDTO resultNoti = saveNoti(notiDTO, userDTO);
+            NotiCntDTO resultNotiCnt = saveNotiCnt(userDTO);
 
-            notiViewList.add(new NotiView(resultNoti, resultNotiCnt));
+            notiViewDTOList.add(new NotiViewDTO(resultNoti, resultNotiCnt));
         }
-        return notiViewList;
+        return notiViewDTOList;
     }
 
-    public Noti saveNoti(Noti noti, MockUser user) throws CloneNotSupportedException {
-        Noti cloneNoti = noti.clone();
-        MockUser cloneUser = user.clone();
-        cloneNoti.setUsers(cloneUser);
-        return notiRepository.save(cloneNoti);
+    public NotiDTO saveNoti(NotiDTO notiDTO, MockUserDTO userDTO) {
+        Noti noti = notiDTO.toDomain(notiDTO);
+        MockUser user = userDTO.toDomain(userDTO);
+
+        noti.setUsers(user);
+        return new NotiDTO().toDTO(notiRepository.save(noti));
     }
 
-    public NotiCnt saveNotiCnt(MockUser user) throws CloneNotSupportedException {
-        MockUser cloneUser = user.clone();
-        NotiCnt dbNotiCnt = notiCntRepository.findByUser(cloneUser);
+    // TODO: refactor
+    public NotiCntDTO saveNotiCnt(MockUserDTO userDTO) {
+        MockUser user = userDTO.toDomain(userDTO);
+        user.setNotiList(null);
+
+        NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
         boolean existDbNotiCnt = (dbNotiCnt != null) ? true : false;
+        NotiCntDTO notiCntDTO = new NotiCntDTO();
+
+        if (existDbNotiCnt){
+            notiCntDTO = notiCntDTO.toDTO(dbNotiCnt);
+        }
 
         NotiCnt notiCnt = new NotiCnt();
-        notiCnt.setTotalCnt(notiRepository.countByUsers(cloneUser));
-        notiCnt.setBoardCnt(notiRepository.countByUsersAndModule(cloneUser, "board"));
-        notiCnt.setQnaCnt(notiRepository.countByUsersAndModule(cloneUser, "qna"));
-        notiCnt.setUser(cloneUser);
+        notiCnt.setTotalCnt(notiRepository.countByUsers(user));
+        notiCnt.setBoardCnt(notiRepository.countByUsersAndModule(user, "board"));
+        notiCnt.setQnaCnt(notiRepository.countByUsersAndModule(user, "qna"));
+        notiCnt.setUser(user);
 
         if (existDbNotiCnt) {
-            notiCnt.setNotiCntIdx(dbNotiCnt.getNotiCntIdx());
+            notiCnt.setNotiCntIdx(notiCntDTO.getNotiCntIdx());
             notiCntRepository.saveAndFlush(notiCnt);
         } else {
             notiCntRepository.save(notiCnt);
         }
-        return notiCnt;
+
+        return new NotiCntDTO().toDTO(notiCnt);
     }
 
-    public void pushUpdatedData(List<MockUser> watchUserList) throws CloneNotSupportedException {
-        for (MockUser user : watchUserList){
-            if (!user.getUserId().equals("id_Jinhyun")){
+    public void pushUpdatedData(List<MockUserDTO> watchUserList) throws CloneNotSupportedException {
+        for (MockUserDTO userDTO : watchUserList){
+            MockUser user = userDTO.toDomain(userDTO);
+            if (!userDTO.getUserId().equals("id_Jinhyun")){
                 continue;
             }
+
             List <Noti> dbNotiList = notiRepository.findByUsers(user);
+            List <NotiDTO> resultNotiDTOList = new ArrayList<>();
+            // TODO: Extract Method
+            for (Noti noti : dbNotiList){
+                resultNotiDTOList.add(new NotiDTO().toDTO(noti));
+            }
+
             NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
+            // TODO: Extract Method
+            NotiCntDTO resultNotiCntDTO = new NotiCntDTO().toDTO(dbNotiCnt);
 
-            List<Noti> notiList = lazilyError_NotiList(dbNotiList);
-            NotiCnt notiCnt = lazilyError_NotiCnt(dbNotiCnt);
+            List<NotiDTO> notiList = lazilyError_NotiList(resultNotiDTOList);
+            NotiCntDTO notiCntDTO = lazilyError_NotiCnt(resultNotiCntDTO);
 
-            NotiView notiView = new NotiView();
-            notiView.setNotiList(notiList);
-            notiView.setNotiCnt(notiCnt);
+            NotiViewDTO notiViewDTO = new NotiViewDTO();
+            notiViewDTO.setNotiList(notiList);
+            notiViewDTO.setNotiCnt(notiCntDTO);
 
 //            this.simpMsgTemplate.convertAndSend("/subscribe/notiData/" + user.getUserId(), notiView);
-            simpMsgTemplate.convertAndSend("/subscribe/notiData", notiView);
+            simpMsgTemplate.convertAndSend("/subscribe/notiData", notiViewDTO);
         }
     }
 
@@ -126,46 +151,54 @@ public class NotiService {
 
         // ... data가 없는 경우
 
-        List<Noti> notiList = lazilyError_NotiList(notiRepository.findByUsers(user));
-        NotiCnt notiCnt = lazilyError_NotiCnt(notiCntRepository.findByUser(user));
+        // TODO: Extract Method
+        List<Noti> notiList = notiRepository.findByUsers(user);
+        List<NotiDTO> resultNotiDTOList = new ArrayList<>();
+        for(Noti noti : notiList){
+            resultNotiDTOList.add(new NotiDTO().toDTO(noti));
+        }
+        List<NotiDTO> notiDTOList = lazilyError_NotiList(resultNotiDTOList);
+
+        // TODO: Extract Method
+        NotiCnt notiCnt = notiCntRepository.findByUser(user);
+        NotiCntDTO notiCntDTO = lazilyError_NotiCnt(new NotiCntDTO().toDTO(notiCnt));
+
         notiCnt.setUser(null);
 
-        NotiView notiView = new NotiView();
-        notiView.setNotiList(notiList);
-        notiView.setNotiCnt(notiCnt);
+        NotiViewDTO notiViewDTO = new NotiViewDTO();
+        notiViewDTO.setNotiList(notiDTOList);
+        notiViewDTO.setNotiCnt(notiCntDTO);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        return objectMapper.writeValueAsString(notiView);
+        return objectMapper.writeValueAsString(notiViewDTO);
     }
 
     /*
     problem message:
-    failed to lazily initialize a collection of role
+    failed to lazily initialize a collection toDomain role
     io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
-        io.codechobostudy.notifications.domain.NotiView["notiList"]
+        io.codechobostudy.notifications.dto.NotiView["notiList"]
         io.codechobostudy.notifications.domain.Noti["users"]
 
     io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
-        io.codechobostudy.notifications.domain.NotiView["notiCnt"]
+        io.codechobostudy.notifications.dto.NotiView["notiCnt"]
         io.codechobostudy.notifications.domain.NotiCnt["user"]
     */
     // Jpa 오류 해결방안 필요
-    public List<Noti> lazilyError_NotiList(List<Noti> dbNotiList) throws CloneNotSupportedException {
-        List<Noti> notiList = new ArrayList<>();
-        for (Noti dbNoti : dbNotiList){
-            Noti noti = dbNoti.clone();     // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
-            noti.setUsers(null);
-            notiList.add(noti);
+    public List<NotiDTO> lazilyError_NotiList(List<NotiDTO> notiDTOList) throws CloneNotSupportedException {
+        List<NotiDTO> resultNotiDTOList = new ArrayList<>();
+        for (NotiDTO notiDTO : notiDTOList){
+            notiDTO.setUsersDTO(null);      // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+            resultNotiDTOList.add(notiDTO);
         }
-        return notiList;
+        return resultNotiDTOList;
     }
 
     // Jpa 오류 해결방안 필요
-    public NotiCnt lazilyError_NotiCnt(NotiCnt dbNotiCnt) throws CloneNotSupportedException {
-        NotiCnt notiCnt = dbNotiCnt.clone();    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
-        notiCnt.setUser(null);
-        return notiCnt;
+    public NotiCntDTO lazilyError_NotiCnt(NotiCntDTO notiCntDTO) throws CloneNotSupportedException {
+        notiCntDTO.setUser(null);    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+        return notiCntDTO;
     }
 
     public void deleteAllData() {

@@ -1,9 +1,10 @@
 package io.codechobostudy.notifications.service;
 
 import io.codechobostudy.mock.user.domain.MockUser;
+import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
-import io.codechobostudy.notifications.domain.Noti;
-import io.codechobostudy.notifications.domain.NotiCnt;
+import io.codechobostudy.notifications.dto.NotiCntDTO;
+import io.codechobostudy.notifications.dto.NotiDTO;
 import io.codechobostudy.notifications.repository.MockNotiBuilder;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
@@ -32,27 +33,38 @@ public class MockNotiService {
         insertInitData_NotiCnt();
     }
 
-    public List<Noti> insertInitData_Noti() throws CloneNotSupportedException {
-        List<Noti> notiList = new ArrayList<>();
-        MockUser user1 = mockUserRepository.findByUserId(notiBuilder.buildUserData(1).getUserId());
-        MockUser user2 = mockUserRepository.findByUserId(notiBuilder.buildUserData(2).getUserId());
+    public List<NotiDTO> insertInitData_Noti() throws CloneNotSupportedException {
+        // TODO: NotiService.getNotiData 와 같이 수정
+        List<NotiDTO> notiDTOList = new ArrayList<>();
+        MockUserDTO userDTO1 = new MockUserDTO();
+        userDTO1.setUserId(notiBuilder.buildUserData(1).getUserId());
+        MockUser user1 = userDTO1.toDomain(userDTO1);
 
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(1, "board"), user1));
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(2, "board"), user1));
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(3, "board"), user1));
-        
-        notiList.add(notiService.saveNoti(notiBuilder.buildNotiData(10, "qna"), user2));
+        MockUserDTO userDTO2 = new MockUserDTO();
+        userDTO2.setUserId(notiBuilder.buildUserData(2).getUserId());
+        MockUser user2 = userDTO1.toDomain(userDTO2);
 
-        return notiList;
+        MockUser dbUser1 = mockUserRepository.findByUserId(user1.getUserId());
+        MockUser dbUser2 = mockUserRepository.findByUserId(user2.getUserId());
+
+        notiDTOList.add(notiService.saveNoti(notiBuilder.buildNotiData(1, "board"), new MockUserDTO().toDTO(dbUser1)));
+        notiDTOList.add(notiService.saveNoti(notiBuilder.buildNotiData(2, "board"), new MockUserDTO().toDTO(dbUser1)));
+        notiDTOList.add(notiService.saveNoti(notiBuilder.buildNotiData(3, "board"), new MockUserDTO().toDTO(dbUser1)));
+
+        notiDTOList.add(notiService.saveNoti(notiBuilder.buildNotiData(10, "qna"), new MockUserDTO().toDTO(dbUser2)));
+
+        return notiDTOList;
     }
 
-    public List<NotiCnt> insertInitData_NotiCnt() throws CloneNotSupportedException {
-        List<NotiCnt> notiCntList = new ArrayList<>();
+    public List<NotiCntDTO> insertInitData_NotiCnt() throws CloneNotSupportedException {
+        // TODO: NotiService.getNotiData 와 같이 수정
+        List<NotiCntDTO> notiCntDTOList = new ArrayList<>();
         List<MockUser> userList = mockUserRepository.findAll();
+        List<MockUserDTO> userDTOList = new MockUserDTO().toDTOList(userList);
 
-        for (MockUser user : userList){
-            notiCntList.add(notiService.saveNotiCnt(user));
+        for (MockUserDTO userDTO : userDTOList){
+            notiCntDTOList.add(notiService.saveNotiCnt(userDTO));
         }
-        return notiCntList;
+        return notiCntDTOList;
     }
 }
