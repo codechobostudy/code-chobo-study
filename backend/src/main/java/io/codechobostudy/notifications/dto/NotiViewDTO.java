@@ -1,6 +1,8 @@
 package io.codechobostudy.notifications.dto;
 
 import io.codechobostudy.mock.user.dto.MockUserDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -12,41 +14,15 @@ public class NotiViewDTO {
         this.notiDTO = notiDTO;
     }
 
+    @Getter@Setter
     private List<NotiDTO> notiList;
+
+    @Getter@Setter
     private NotiCntDTO notiCntDTO;
+
+    @Getter@Setter
     private MockUserDTO userDTO;
 
+    @Getter@Setter
     private NotiDTO notiDTO;
-
-    public void setNotiList(List<NotiDTO> notiList) {
-        this.notiList = notiList;
-    }
-
-    public List<NotiDTO> getNotiList() {
-        return notiList;
-    }
-
-    public void setNotiCnt(NotiCntDTO notiCntDTO) {
-        this.notiCntDTO = notiCntDTO;
-    }
-
-    public NotiCntDTO getNotiCnt() {
-        return notiCntDTO;
-    }
-
-    public MockUserDTO getUser() {
-        return userDTO;
-    }
-
-    public void setUserDTO(MockUserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
-
-    public NotiDTO getNotiDTO() {
-        return notiDTO;
-    }
-
-    public void setNoti(NotiDTO notiDTO) {
-        this.notiDTO = notiDTO;
-    }
 }

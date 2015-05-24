@@ -1,22 +1,12 @@
 package io.codechobostudy.notifications.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class RelayNoti {
+    @Getter@Setter
     private String module;
+
+    @Getter@Setter
     private String primaryKey;
-
-    public String getModule() {
-        return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
-    }
-
-    public String getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
-    }
 }

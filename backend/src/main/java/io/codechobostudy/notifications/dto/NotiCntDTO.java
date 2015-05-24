@@ -2,53 +2,24 @@ package io.codechobostudy.notifications.dto;
 
 import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.notifications.domain.NotiCnt;
+import lombok.Getter;
+import lombok.Setter;
 
 public class NotiCntDTO {
+    @Getter@Setter
     private int notiCntIdx;
+
+    @Getter@Setter
     private int totalCnt;
+
+    @Getter@Setter
     private int boardCnt;
+
+    @Getter@Setter
     private int qnaCnt;
+
+    @Getter@Setter
     private MockUserDTO userDTO;
-
-    public int getNotiCntIdx() {
-        return notiCntIdx;
-    }
-
-    public void setNotiCntIdx(int notiCntIdx) {
-        this.notiCntIdx = notiCntIdx;
-    }
-
-    public int getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setTotalCnt(int totalCnt) {
-        this.totalCnt = totalCnt;
-    }
-
-    public int getBoardCnt() {
-        return boardCnt;
-    }
-
-    public void setBoardCnt(int boardCnt) {
-        this.boardCnt = boardCnt;
-    }
-
-    public int getQnaCnt() {
-        return qnaCnt;
-    }
-
-    public void setQnaCnt(int qnaCnt) {
-        this.qnaCnt = qnaCnt;
-    }
-
-    public MockUserDTO getUser() {
-        return userDTO;
-    }
-
-    public void setUser(MockUserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
 
     public NotiCntDTO toDTO(NotiCnt notiCnt) {
         NotiCntDTO notiCntDTO = new NotiCntDTO();
@@ -67,7 +38,7 @@ public class NotiCntDTO {
         notiCnt.setTotalCnt(notiCntDTO.getTotalCnt());
         notiCnt.setBoardCnt(notiCntDTO.getBoardCnt());
         notiCnt.setQnaCnt(notiCntDTO.getQnaCnt());
-        notiCnt.setUser(new MockUserDTO().toDomain(notiCntDTO.getUser()));
+        notiCnt.setUser(new MockUserDTO().toDomain(notiCntDTO.getUserDTO()));
         return notiCnt;
     }
 }

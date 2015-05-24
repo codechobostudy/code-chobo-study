@@ -2,47 +2,24 @@ package io.codechobostudy.mock.user.dto;
 
 import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.notifications.dto.NotiDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MockUserDTO {
+    @Getter@Setter
     private int idx;
+
+    @Getter@Setter
     private String userId;
+
+    @Getter@Setter
     private String userName;
+
+    @Getter@Setter
     List<NotiDTO> notiDTOList = new ArrayList<>();
-
-    public int getIdx() {
-        return idx;
-    }
-
-    public void setIdx(int idx) {
-        this.idx = idx;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public List<NotiDTO> getNotiDTOList() {
-        return notiDTOList;
-    }
-
-    public void setNotiDTOList(List<NotiDTO> notiDTOList) {
-        this.notiDTOList = notiDTOList;
-    }
 
     public MockUserDTO toDTO(MockUser user){
         MockUserDTO mockUserDTO = new MockUserDTO();

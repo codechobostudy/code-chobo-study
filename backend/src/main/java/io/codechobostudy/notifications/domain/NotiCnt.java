@@ -1,6 +1,8 @@
 package io.codechobostudy.notifications.domain;
 
 import io.codechobostudy.mock.user.domain.MockUser;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,15 +11,19 @@ import javax.persistence.*;
 public class NotiCnt implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter@Setter
     private int notiCntIdx;
 
     @Column
+    @Getter@Setter
     private int totalCnt;
 
     @Column
+    @Getter@Setter
     private int boardCnt;
 
     @Column
+    @Getter@Setter
     private int qnaCnt;
 
     /*
@@ -27,45 +33,6 @@ public class NotiCnt implements Cloneable {
     */
 
     @OneToOne
+    @Getter@Setter
     private MockUser user;
-
-    public void setTotalCnt(int totalCnt) {
-        this.totalCnt = totalCnt;
-    }
-
-    public int getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setBoardCnt(int boardCnt) {
-        this.boardCnt = boardCnt;
-    }
-
-    public int getBoardCnt() {
-        return boardCnt;
-    }
-
-    public void setQnaCnt(int qnaCnt) {
-        this.qnaCnt = qnaCnt;
-    }
-
-    public int getQnaCnt() {
-        return qnaCnt;
-    }
-
-    public int getNotiCntIdx() {
-        return notiCntIdx;
-    }
-
-    public void setNotiCntIdx(int notiCntIdx) {
-        this.notiCntIdx = notiCntIdx;
-    }
-
-    public MockUser getUser() {
-        return user;
-    }
-
-    public void setUser(MockUser user) {
-        this.user = user;
-    }
 }

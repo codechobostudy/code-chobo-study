@@ -2,56 +2,27 @@ package io.codechobostudy.notifications.dto;
 
 import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.notifications.domain.Noti;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotiDTO {
+    @Getter@Setter
     private int notiNo;
+
+    @Getter@Setter
     private String contents;
+
+    @Getter@Setter
     private String url;
+
+    @Getter@Setter
     private String module;
+
+    @Getter@Setter
     private MockUserDTO usersDTO;
-
-    public int getNotiNo() {
-        return notiNo;
-    }
-
-    public void setNotiNo(int notiNo) {
-        this.notiNo = notiNo;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getModule() {
-        return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
-    }
-
-    public MockUserDTO getUsersDTO() {
-        return usersDTO;
-    }
-
-    public void setUsersDTO(MockUserDTO usersDTO) {
-        this.usersDTO = usersDTO;
-    }
 
     public NotiDTO toDTO(Noti noti) {
         NotiDTO notiDTO = new NotiDTO();
