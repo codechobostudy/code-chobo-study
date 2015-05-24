@@ -33,7 +33,7 @@ var showData = function(notiJsonData){
 
         $("#notiData").append(aElement);
     }
-    $("#notiCnt").html(notiJsonData.notiCnt.totalCnt);
+    $("#notiCnt").html(notiJsonData.notiCntDTO.totalCnt);
 };
 
 

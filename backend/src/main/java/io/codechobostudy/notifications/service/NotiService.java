@@ -138,7 +138,7 @@ public class NotiService {
 
             NotiViewDTO notiViewDTO = new NotiViewDTO();
             notiViewDTO.setNotiList(notiList);
-            notiViewDTO.setNotiCnt(notiCntDTO);
+            notiViewDTO.setNotiCntDTO(notiCntDTO);
 
 //            this.simpMsgTemplate.convertAndSend("/subscribe/notiData/" + user.getUserId(), notiView);
             simpMsgTemplate.convertAndSend("/subscribe/notiData", notiViewDTO);
@@ -167,7 +167,7 @@ public class NotiService {
 
         NotiViewDTO notiViewDTO = new NotiViewDTO();
         notiViewDTO.setNotiList(notiDTOList);
-        notiViewDTO.setNotiCnt(notiCntDTO);
+        notiViewDTO.setNotiCntDTO(notiCntDTO);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -197,7 +197,7 @@ public class NotiService {
 
     // Jpa 오류 해결방안 필요
     public NotiCntDTO lazilyError_NotiCnt(NotiCntDTO notiCntDTO) throws CloneNotSupportedException {
-        notiCntDTO.setUser(null);    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+        notiCntDTO.setUserDTO(null);    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
         return notiCntDTO;
     }
 
