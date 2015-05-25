@@ -163,8 +163,6 @@ public class NotiService {
         NotiCnt notiCnt = notiCntRepository.findByUser(user);
         NotiCntDTO notiCntDTO = lazilyError_NotiCnt(new NotiCntDTO().toDTO(notiCnt));
 
-        notiCnt.setUser(null);
-
         NotiViewDTO notiViewDTO = new NotiViewDTO();
         notiViewDTO.setNotiList(notiDTOList);
         notiViewDTO.setNotiCntDTO(notiCntDTO);
