@@ -23,7 +23,7 @@ public class NotiDTO {
         notiDTO.contents = noti.getContents();
         notiDTO.url = noti.getUrl();
         notiDTO.module = noti.getModule();
-        notiDTO.usersDTO = new MockUserDTO().toDTO(noti.getUsers());
+        notiDTO.usersDTO = new MockUserDTO().toDTO(noti.getUser());
         return notiDTO;
     }
 
@@ -35,7 +35,7 @@ public class NotiDTO {
         noti.setUrl(notiDTO.getUrl());
         noti.setModule(notiDTO.getModule());
         if (notiDTO.getUsersDTO() != null){
-            noti.setUsers(new MockUserDTO().toDomain(notiDTO.getUsersDTO()));
+            noti.setUser(new MockUserDTO().toDomain(notiDTO.getUsersDTO()));
         }
         return noti;
     }

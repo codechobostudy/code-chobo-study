@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface NotiRepository extends JpaRepository <Noti, Integer>{
-    List<Noti> findByUsers(MockUser users);
+    List<Noti> findByUser(MockUser user);
 
-    int countByUsersAndModule(MockUser user, String module);
+    int countByUserAndModule(MockUser user, String module);
 
-    int countByUsers(MockUser user);
+    int countByUser(MockUser user);
 }

@@ -25,5 +25,5 @@ public class Noti implements Cloneable {
 
     @ManyToOne
     @JoinColumn(name="USER_IDX")
-    private MockUser users;     // TODO: users > user로 변경
+    private MockUser user;
 }

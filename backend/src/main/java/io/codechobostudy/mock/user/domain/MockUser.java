@@ -22,6 +22,6 @@ public class MockUser implements Cloneable {
     @Column
     private String userName;
 
-    @OneToMany(mappedBy="users", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     List<Noti> notiList = new ArrayList<>();
 }

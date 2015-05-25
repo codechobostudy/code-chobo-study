@@ -82,7 +82,7 @@ public class NotiService {
         Noti noti = notiDTO.toDomain(notiDTO);
         MockUser user = userDTO.toDomain(userDTO);
 
-        noti.setUsers(user);
+        noti.setUser(user);
         return new NotiDTO().toDTO(notiRepository.save(noti));
     }
 
@@ -100,9 +100,9 @@ public class NotiService {
         }
 
         NotiCnt notiCnt = new NotiCnt();
-        notiCnt.setTotalCnt(notiRepository.countByUsers(user));
-        notiCnt.setBoardCnt(notiRepository.countByUsersAndModule(user, "board"));
-        notiCnt.setQnaCnt(notiRepository.countByUsersAndModule(user, "qna"));
+        notiCnt.setTotalCnt(notiRepository.countByUser(user));
+        notiCnt.setBoardCnt(notiRepository.countByUserAndModule(user, "board"));
+        notiCnt.setQnaCnt(notiRepository.countByUserAndModule(user, "qna"));
         notiCnt.setUser(user);
 
         if (existDbNotiCnt) {
@@ -122,7 +122,7 @@ public class NotiService {
                 continue;
             }
 
-            List <Noti> dbNotiList = notiRepository.findByUsers(user);
+            List <Noti> dbNotiList = notiRepository.findByUser(user);
             List <NotiDTO> resultNotiDTOList = new ArrayList<>();
             // TODO: Extract Method
             for (Noti noti : dbNotiList){
@@ -152,12 +152,8 @@ public class NotiService {
         // ... data가 없는 경우
 
         // TODO: Extract Method
-        List<Noti> notiList = notiRepository.findByUsers(user);
-        List<NotiDTO> resultNotiDTOList = new ArrayList<>();
-        for(Noti noti : notiList){
-            resultNotiDTOList.add(new NotiDTO().toDTO(noti));
-        }
-        List<NotiDTO> notiDTOList = lazilyError_NotiList(resultNotiDTOList);
+        List<Noti> notiList = notiRepository.findByUser(user);
+        List<NotiDTO> notiDTOList = lazilyError_NotiList(new NotiDTO().toDTOList(notiList));
 
         // TODO: Extract Method
         NotiCnt notiCnt = notiCntRepository.findByUser(user);
@@ -177,7 +173,7 @@ public class NotiService {
     failed to lazily initialize a collection toDomain role
     io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
         io.codechobostudy.notifications.dto.NotiView["notiList"]
-        io.codechobostudy.notifications.domain.Noti["users"]
+        io.codechobostudy.notifications.domain.Noti["user"]
 
     io.codechobostudy.mock.user.domain.MockUser.notiList, could not initialize proxy
         io.codechobostudy.notifications.dto.NotiView["notiCnt"]
