@@ -8,22 +8,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="NOTI_CNT")
+@Getter @Setter
 public class NotiCnt implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter@Setter
     private int notiCntIdx;
 
     @Column
-    @Getter@Setter
     private int totalCnt;
 
     @Column
-    @Getter@Setter
     private int boardCnt;
 
     @Column
-    @Getter@Setter
     private int qnaCnt;
 
     /*
@@ -33,6 +30,5 @@ public class NotiCnt implements Cloneable {
     */
 
     @OneToOne
-    @Getter@Setter
     private MockUser user;
 }

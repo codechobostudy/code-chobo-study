@@ -5,20 +5,12 @@ import io.codechobostudy.notifications.domain.NotiCnt;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class NotiCntDTO {
-    @Getter@Setter
     private int notiCntIdx;
-
-    @Getter@Setter
     private int totalCnt;
-
-    @Getter@Setter
     private int boardCnt;
-
-    @Getter@Setter
     private int qnaCnt;
-
-    @Getter@Setter
     private MockUserDTO userDTO;
 
     public NotiCntDTO toDTO(NotiCnt notiCnt) {

@@ -8,20 +8,12 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
 public class NotiDTO {
-    @Getter@Setter
     private int notiNo;
-
-    @Getter@Setter
     private String contents;
-
-    @Getter@Setter
     private String url;
-
-    @Getter@Setter
     private String module;
-
-    @Getter@Setter
     private MockUserDTO usersDTO;
 
     public NotiDTO toDTO(Noti noti) {

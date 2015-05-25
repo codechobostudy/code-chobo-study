@@ -8,17 +8,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
 public class MockUserDTO {
-    @Getter@Setter
     private int idx;
-
-    @Getter@Setter
     private String userId;
-
-    @Getter@Setter
     private String userName;
-
-    @Getter@Setter
     List<NotiDTO> notiDTOList = new ArrayList<>();
 
     public MockUserDTO toDTO(MockUser user){
