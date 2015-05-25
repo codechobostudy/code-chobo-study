@@ -24,8 +24,8 @@ public class MockUserService {
         return mockUserRepository.save(user);
     }
 
-    public MockUser getUserByUserId(String userId) {
-        return mockUserRepository.findByUserId(userId);
+    public MockUserDTO getUser(String userId) {
+        return new MockUserDTO().toDTO(mockUserRepository.findByUserId(userId));
     }
 
     public List<MockUser> insertInitData() {

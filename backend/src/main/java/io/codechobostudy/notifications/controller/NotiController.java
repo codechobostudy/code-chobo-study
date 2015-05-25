@@ -43,11 +43,7 @@ public class NotiController {
     @RequestMapping(value = "/insertInitData")
     @ResponseBody
     public String insertInitData() {
-        try {
-            mockNotiService.insertInitData_NotiAndNotiCnt();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        mockNotiService.insertInitData_NotiAndNotiCnt();
         return "success";
     }
 
@@ -57,8 +53,6 @@ public class NotiController {
         String notiData = "";
         try {
             notiData = notiService.getNotiData();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -69,11 +63,7 @@ public class NotiController {
     @RequestMapping(value = "/call/relayNoti")
     @ResponseBody
     public String relayNoti(@RequestBody RelayNoti relayNoti) {
-        try {
-            notiService.relayNoti("");
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        notiService.relayNoti("");
         return "success";
     }
 }

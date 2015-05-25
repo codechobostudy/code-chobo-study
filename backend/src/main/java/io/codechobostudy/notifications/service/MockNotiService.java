@@ -28,12 +28,12 @@ public class MockNotiService {
     @Autowired
     private NotiService notiService;
 
-    public void insertInitData_NotiAndNotiCnt() throws CloneNotSupportedException {
+    public void insertInitData_NotiAndNotiCnt() {
         insertInitData_Noti();
         insertInitData_NotiCnt();
     }
 
-    public List<NotiDTO> insertInitData_Noti() throws CloneNotSupportedException {
+    public List<NotiDTO> insertInitData_Noti() {
         // TODO: NotiService.getNotiData 와 같이 수정
         List<NotiDTO> notiDTOList = new ArrayList<>();
         MockUserDTO userDTO1 = new MockUserDTO();
@@ -56,7 +56,7 @@ public class MockNotiService {
         return notiDTOList;
     }
 
-    public List<NotiCntDTO> insertInitData_NotiCnt() throws CloneNotSupportedException {
+    public List<NotiCntDTO> insertInitData_NotiCnt() {
         // TODO: NotiService.getNotiData 와 같이 수정
         List<NotiCntDTO> notiCntDTOList = new ArrayList<>();
         List<MockUser> userList = mockUserRepository.findAll();

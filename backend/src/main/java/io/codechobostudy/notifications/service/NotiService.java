@@ -38,7 +38,7 @@ public class NotiService {
     private MockUserService mockUserService;
 
     // 알림 중계 서비스
-    public void relayNoti(String jsonData) throws CloneNotSupportedException {
+    public void relayNoti(String jsonData) {
         /*
         ... jsonData to relayNoti Domain
             String module
@@ -79,65 +79,43 @@ public class NotiService {
     }
 
     public NotiDTO saveNoti(NotiDTO notiDTO, MockUserDTO userDTO) {
+        notiDTO.setUsersDTO(userDTO);
         Noti noti = notiDTO.toDomain(notiDTO);
-        MockUser user = userDTO.toDomain(userDTO);
-
-        noti.setUser(user);
         return new NotiDTO().toDTO(notiRepository.save(noti));
     }
 
-    // TODO: refactor
     public NotiCntDTO saveNotiCnt(MockUserDTO userDTO) {
         MockUser user = userDTO.toDomain(userDTO);
-        user.setNotiList(null);
-
-        NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
-        boolean existDbNotiCnt = (dbNotiCnt != null) ? true : false;
-        NotiCntDTO notiCntDTO = new NotiCntDTO();
-
-        if (existDbNotiCnt){
-            notiCntDTO = notiCntDTO.toDTO(dbNotiCnt);
-        }
-
         NotiCnt notiCnt = new NotiCnt();
         notiCnt.setTotalCnt(notiRepository.countByUser(user));
         notiCnt.setBoardCnt(notiRepository.countByUserAndModule(user, "board"));
         notiCnt.setQnaCnt(notiRepository.countByUserAndModule(user, "qna"));
         notiCnt.setUser(user);
 
-        if (existDbNotiCnt) {
+        NotiCntDTO notiCntDTO = getNotiCntDTO(userDTO);
+        boolean isExistNotiCntDTO = (notiCntDTO != null) ? true : false;
+        if (isExistNotiCntDTO) {
             notiCnt.setNotiCntIdx(notiCntDTO.getNotiCntIdx());
             notiCntRepository.saveAndFlush(notiCnt);
         } else {
             notiCntRepository.save(notiCnt);
         }
-
         return new NotiCntDTO().toDTO(notiCnt);
     }
 
-    public void pushUpdatedData(List<MockUserDTO> watchUserList) throws CloneNotSupportedException {
+    public void pushUpdatedData(List<MockUserDTO> watchUserList) {
         for (MockUserDTO userDTO : watchUserList){
-            MockUser user = userDTO.toDomain(userDTO);
             if (!userDTO.getUserId().equals("id_Jinhyun")){
                 continue;
             }
+            List<NotiDTO> notiDTOList = getNotiDTOList(userDTO);
+            notiDTOList = lazilyError_NotiList(notiDTOList);
 
-            List <Noti> dbNotiList = notiRepository.findByUser(user);
-            List <NotiDTO> resultNotiDTOList = new ArrayList<>();
-            // TODO: Extract Method
-            for (Noti noti : dbNotiList){
-                resultNotiDTOList.add(new NotiDTO().toDTO(noti));
-            }
-
-            NotiCnt dbNotiCnt = notiCntRepository.findByUser(user);
-            // TODO: Extract Method
-            NotiCntDTO resultNotiCntDTO = new NotiCntDTO().toDTO(dbNotiCnt);
-
-            List<NotiDTO> notiList = lazilyError_NotiList(resultNotiDTOList);
-            NotiCntDTO notiCntDTO = lazilyError_NotiCnt(resultNotiCntDTO);
+            NotiCntDTO notiCntDTO = getNotiCntDTO(userDTO);
+            notiCntDTO = lazilyError_NotiCnt(notiCntDTO);
 
             NotiViewDTO notiViewDTO = new NotiViewDTO();
-            notiViewDTO.setNotiList(notiList);
+            notiViewDTO.setNotiList(notiDTOList);
             notiViewDTO.setNotiCntDTO(notiCntDTO);
 
 //            this.simpMsgTemplate.convertAndSend("/subscribe/notiData/" + user.getUserId(), notiView);
@@ -145,19 +123,27 @@ public class NotiService {
         }
     }
 
-    public String getNotiData() throws JsonProcessingException, CloneNotSupportedException {
-        MockUser user = mockUserRepository.findByUserId("id_Jinhyun");
+    public List<NotiDTO> getNotiDTOList(MockUserDTO userDTO) {
+        List<Noti> notiList = notiRepository.findByUser(new MockUserDTO().toDomain(userDTO));
+        return new NotiDTO().toDTOList(notiList);
+    }
+
+    public NotiCntDTO getNotiCntDTO(MockUserDTO userDTO) {
+        NotiCnt notiCnt = notiCntRepository.findByUser(new MockUserDTO().toDomain(userDTO));
+        return new NotiCntDTO().toDTO(notiCnt);
+    }
+
+    public String getNotiData() throws JsonProcessingException {
+        MockUserDTO userDTO = mockUserService.getUser("id_Jinhyun");
         // ... get session UserInfo
 
         // ... data가 없는 경우
 
-        // TODO: Extract Method
-        List<Noti> notiList = notiRepository.findByUser(user);
-        List<NotiDTO> notiDTOList = lazilyError_NotiList(new NotiDTO().toDTOList(notiList));
+        List<NotiDTO> notiDTOList = getNotiDTOList(userDTO);
+        notiDTOList = lazilyError_NotiList(notiDTOList);
 
-        // TODO: Extract Method
-        NotiCnt notiCnt = notiCntRepository.findByUser(user);
-        NotiCntDTO notiCntDTO = lazilyError_NotiCnt(new NotiCntDTO().toDTO(notiCnt));
+        NotiCntDTO notiCntDTO = getNotiCntDTO(userDTO);
+        notiCntDTO = lazilyError_NotiCnt(notiCntDTO);
 
         NotiViewDTO notiViewDTO = new NotiViewDTO();
         notiViewDTO.setNotiList(notiDTOList);
@@ -180,18 +166,18 @@ public class NotiService {
         io.codechobostudy.notifications.domain.NotiCnt["user"]
     */
     // Jpa 오류 해결방안 필요
-    public List<NotiDTO> lazilyError_NotiList(List<NotiDTO> notiDTOList) throws CloneNotSupportedException {
+    public List<NotiDTO> lazilyError_NotiList(List<NotiDTO> notiDTOList) {
         List<NotiDTO> resultNotiDTOList = new ArrayList<>();
         for (NotiDTO notiDTO : notiDTOList){
-            notiDTO.setUsersDTO(null);      // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+            notiDTO.setUsersDTO(null);
             resultNotiDTOList.add(notiDTO);
         }
         return resultNotiDTOList;
     }
 
     // Jpa 오류 해결방안 필요
-    public NotiCntDTO lazilyError_NotiCnt(NotiCntDTO notiCntDTO) throws CloneNotSupportedException {
-        notiCntDTO.setUserDTO(null);    // 캐시된 객체를 수정하면 자동으로 업데이트 쿼리 발생
+    public NotiCntDTO lazilyError_NotiCnt(NotiCntDTO notiCntDTO) {
+        notiCntDTO.setUserDTO(null);
         return notiCntDTO;
     }
 
