@@ -137,8 +137,6 @@ public class NotiService {
         MockUserDTO userDTO = mockUserService.getUser("id_Jinhyun");
         // ... get session UserInfo
 
-        // ... data가 없는 경우
-
         List<NotiDTO> notiDTOList = getNotiDTOList(userDTO);
         notiDTOList = lazilyError_NotiList(notiDTOList);
 
@@ -177,7 +175,9 @@ public class NotiService {
 
     // Jpa 오류 해결방안 필요
     public NotiCntDTO lazilyError_NotiCnt(NotiCntDTO notiCntDTO) {
-        notiCntDTO.setUserDTO(null);
+        if (notiCntDTO != null){
+            notiCntDTO.setUserDTO(null);
+        }
         return notiCntDTO;
     }
 

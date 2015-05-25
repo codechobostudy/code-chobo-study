@@ -18,7 +18,7 @@ public class NotiCntDTO {
 
     public NotiCntDTO toDTO(NotiCnt notiCnt) {
         if (notiCnt == null) {
-            return null;
+            notiCnt = new NotiCnt();
         }
         NotiCntDTO notiCntDTO = new NotiCntDTO();
         notiCntDTO.notiCntIdx = notiCnt.getNotiCntIdx();
