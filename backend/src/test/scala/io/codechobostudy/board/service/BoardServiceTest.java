@@ -31,8 +31,6 @@ public class BoardServiceTest {
     public void test_board_creatd() throws Exception {
 
         Board board = new Board();
-
-        board.setRegDate("2015-05-18");
         board.setRegId("urosaria");
         board.setRegName("Yu rosaria");
         board.setSubject("title");
@@ -50,8 +48,6 @@ public class BoardServiceTest {
     public void test_board_list() throws Exception {
 
         Board board = new Board();
-
-        board.setRegDate("2015-05-18");
         board.setRegId("urosaria");
         board.setRegName("Yu rosaria");
         board.setSubject("title");

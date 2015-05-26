@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/board")
@@ -21,24 +22,39 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @RequestMapping(value = ("/create"),method = RequestMethod.POST)
-    public String boardCreate (Board board, Model model){
+    @RequestMapping(value = ("/{boardId}/createPage"))
+    public ModelAndView boardCreatePage (Board board, Model model, @PathVariable("boardId") Long boardId){
+
+        board.setBoardId(boardId);
+
+        return new ModelAndView("/board/create");
+
+    }
+
+    @RequestMapping(value = ("/{boardId}/create"),method = RequestMethod.POST)
+    public String boardCreate (Board board, Model model, @PathVariable("boardId") Long boardId){
+
+        board.setBoardId(boardId);
 
         model.addAttribute("board", boardService.boardCreate(board));
         return "board create " ;
 
     }
 
-    @RequestMapping(value = ("/list"),method = RequestMethod.GET)
-    public String boardList (Board board, Model model){
+    @RequestMapping(value = ("/{boardId}/list"),method = RequestMethod.GET)
+    public String boardList (Board board, Model model, @PathVariable("boardId") Long boardId){
+
+        board.setBoardId(boardId);
 
         boardService.boardList();
         return "board list " ;
 
     }
 
-    @RequestMapping(value = ("/show"),method = RequestMethod.GET)
-    public String boardShow (Board board, Model model){
+    @RequestMapping(value = ("/{boardId}/show"),method = RequestMethod.GET)
+    public String boardShow (Board board, Model model, @PathVariable("boardId") Long boardId){
+
+        board.setBoardId(boardId);
 
         boardService.boardShow(board);
         return "board show " ;
@@ -46,18 +62,22 @@ public class BoardController {
     }
 
 
-    @RequestMapping(value = ("/update/{id}"),method = RequestMethod.PUT)
+    @RequestMapping(value = ("/{boardId}/update/{id}"),method = RequestMethod.PUT)
     public String boardUpdate (Board board, Model model,
-                               @PathVariable("id") Long id){
+                               @PathVariable("id") Long id,
+                               @PathVariable("boardId") Long boardId){
 
+        board.setBoardId(boardId);
         boardService.boardUpdate(board);
         return "board update " ;
 
     }
 
-    @RequestMapping(value = ("/delete/{id}"),method = RequestMethod.DELETE)
+    @RequestMapping(value = ("/{boardId}/delete/{id}"),method = RequestMethod.DELETE)
     public String boardDelete (Board board, Model model,
-                               @PathVariable("id") Long id){
+                               @PathVariable("id") Long id,
+                               @PathVariable("boardId") Long boardId){
+        board.setBoardId(boardId);
 
         boardService.boardDelete(board);
         return "board delete " ;
