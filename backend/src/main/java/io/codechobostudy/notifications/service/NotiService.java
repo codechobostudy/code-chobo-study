@@ -70,6 +70,9 @@ public class NotiService {
         List <NotiViewDTO> notiViewDTOList = new ArrayList<>();
 
         for (MockUserDTO userDTO : watchUserList){
+            if (userDTO.getIdx() == 0){
+                throw new IllegalArgumentException();
+            }
             NotiDTO resultNoti = saveNoti(notiDTO, userDTO);
             NotiCntDTO resultNotiCnt = saveNotiCnt(userDTO);
 
@@ -79,7 +82,7 @@ public class NotiService {
     }
 
     public NotiDTO saveNoti(NotiDTO notiDTO, MockUserDTO userDTO) {
-        notiDTO.setUsersDTO(userDTO);
+        notiDTO.setUserDTO(userDTO);
         Noti noti = notiDTO.toDomain(notiDTO);
         return new NotiDTO().toDTO(notiRepository.save(noti));
     }
@@ -129,6 +132,7 @@ public class NotiService {
     }
 
     public NotiCntDTO getNotiCntDTO(MockUserDTO userDTO) {
+        // TODO: bugfix noti가 없을 경우
         NotiCnt notiCnt = notiCntRepository.findByUser(new MockUserDTO().toDomain(userDTO));
         return new NotiCntDTO().toDTO(notiCnt);
     }
@@ -167,7 +171,7 @@ public class NotiService {
     public List<NotiDTO> lazilyError_NotiList(List<NotiDTO> notiDTOList) {
         List<NotiDTO> resultNotiDTOList = new ArrayList<>();
         for (NotiDTO notiDTO : notiDTOList){
-            notiDTO.setUsersDTO(null);
+            notiDTO.setUserDTO(null);
             resultNotiDTOList.add(notiDTO);
         }
         return resultNotiDTOList;

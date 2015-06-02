@@ -52,7 +52,7 @@ public class MockNotiBuilder {
     public NotiDTO buildNotiData(int dataIdx, String module, MockUserDTO userDTO){
         validModule(module);
         NotiDTO notiDTO = getNotiData(dataIdx, module);
-        notiDTO.setUsersDTO(userDTO);
+        notiDTO.setUserDTO(userDTO);
         return notiDTO;
     }
 

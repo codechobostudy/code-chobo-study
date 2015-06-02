@@ -14,7 +14,22 @@ public class NotiDTO {
     private String contents;
     private String url;
     private String module;
-    private MockUserDTO usersDTO;
+    private MockUserDTO userDTO;
+
+    public NotiDTO() {
+    }
+
+    public NotiDTO(String contents) {
+        this.contents = contents;
+    }
+
+    public NotiDTO(NotiDTOBuilder builder){
+        this.notiNo = builder.notiNo;
+        this.contents = builder.contents;
+        this.url = builder.url;
+        this.module = builder.module;
+        this.userDTO = builder.userDTO;
+    }
 
     public NotiDTO toDTO(Noti noti) {
         NotiDTO notiDTO = new NotiDTO();
@@ -23,7 +38,7 @@ public class NotiDTO {
         notiDTO.contents = noti.getContents();
         notiDTO.url = noti.getUrl();
         notiDTO.module = noti.getModule();
-        notiDTO.usersDTO = new MockUserDTO().toDTO(noti.getUser());
+        notiDTO.userDTO = new MockUserDTO().toDTO(noti.getUser());
         return notiDTO;
     }
 
@@ -34,8 +49,8 @@ public class NotiDTO {
         noti.setContents(notiDTO.getContents());
         noti.setUrl(notiDTO.getUrl());
         noti.setModule(notiDTO.getModule());
-        if (notiDTO.getUsersDTO() != null){
-            noti.setUser(new MockUserDTO().toDomain(notiDTO.getUsersDTO()));
+        if (notiDTO.getUserDTO() != null){
+            noti.setUser(new MockUserDTO().toDomain(notiDTO.getUserDTO()));
         }
         return noti;
     }
@@ -54,5 +69,45 @@ public class NotiDTO {
             notiList.add(this.toDomain(notiDTO));
         }
         return notiList;
+    }
+
+    public static class NotiDTOBuilder {
+        private int notiNo;
+        private String contents;
+        private String url;
+        private String module;
+        private MockUserDTO userDTO;
+
+        public NotiDTOBuilder withContents(String contents){
+            this.contents = contents;
+            return this;
+        }
+
+        public NotiDTOBuilder withUrl(String url){
+            this.url = url;
+            return this;
+        }
+
+        public NotiDTOBuilder withModule(String module){
+            this.module = module;
+            return this;
+        }
+
+        public NotiDTOBuilder withUserDTO(MockUserDTO userDTO){
+            this.userDTO = userDTO;
+            return this;
+        }
+
+        private void validNotiDTOObject() {
+            // do your stuff here
+
+            // Module Name
+        }
+
+        public NotiDTO build() {
+            NotiDTO notiDTO = new NotiDTO(this);
+            validNotiDTOObject();
+            return notiDTO;
+        }
     }
 }

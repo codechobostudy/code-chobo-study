@@ -15,6 +15,13 @@ public class MockUserDTO {
     private String userName;
     List<NotiDTO> notiDTOList = new ArrayList<>();
 
+    public MockUserDTO() {
+    }
+
+    public MockUserDTO(String userId) {
+        this.userId = userId;
+    }
+
     public MockUserDTO toDTO(MockUser user){
         MockUserDTO mockUserDTO = new MockUserDTO();
         mockUserDTO.idx = user.getIdx();
