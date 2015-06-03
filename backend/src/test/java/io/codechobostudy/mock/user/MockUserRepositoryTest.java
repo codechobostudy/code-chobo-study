@@ -65,7 +65,7 @@ public class MockUserRepositoryTest {
     @Test
     public void convert_userDTO_toDTO() {
         // given
-        mockUserRepository.save(given_user_1);
+        MockUser insertedUser = mockUserRepository.save(given_user_1);
         MockUser dbUser = mockUserRepository.findByUserId(given_user_1.getUserId());
 
         // when
@@ -96,12 +96,12 @@ public class MockUserRepositoryTest {
     @Test
     public void insert_MockUser() {
         // when
-        mockUserRepository.save(given_user_1);
         mockUserRepository.save(given_user_2);
-        MockUser dbUser_1 = mockUserRepository.findByUserId(given_user_1.getUserId());
-        MockUser dbUser_2 = mockUserRepository.findByUserId(given_user_2.getUserId());
+        mockUserRepository.save(given_user_1);
 
         // then
+        MockUser dbUser_1 = mockUserRepository.findByUserId("Id_jinhyun");
+        MockUser dbUser_2 = mockUserRepository.findByUserId("Id_changhwaoh");
         assertThat(dbUser_1, is(notNullValue()));
         assertThat(dbUser_1.getUserId(), is(given_user_1.getUserId()));
         assertThat(dbUser_2, is(notNullValue()));

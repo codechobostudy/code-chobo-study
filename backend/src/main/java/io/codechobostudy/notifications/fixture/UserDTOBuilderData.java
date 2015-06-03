@@ -7,11 +7,13 @@ public abstract class UserDTOBuilderData {
 
     public MockUserDTO buildData() {
         userDTO = new MockUserDTO();
+        buildIdx();
         buildUserId();
         buildUserName();
         return userDTO;
     }
 
+    public abstract void buildIdx();
     public abstract void buildUserId();
     public abstract void buildUserName();
 }
