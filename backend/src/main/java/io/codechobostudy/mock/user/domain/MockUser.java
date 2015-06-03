@@ -1,6 +1,7 @@
 package io.codechobostudy.mock.user.domain;
 
 import io.codechobostudy.notifications.domain.Noti;
+import io.codechobostudy.notifications.domain.Watch;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="USER")
 @Getter @Setter
-public class MockUser implements Cloneable {
+public class MockUser{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
@@ -24,4 +25,7 @@ public class MockUser implements Cloneable {
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     List<Noti> notiList = new ArrayList<>();
+
+    @OneToMany(mappedBy="watchUser", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    List<Watch> watchList = new ArrayList<>();
 }

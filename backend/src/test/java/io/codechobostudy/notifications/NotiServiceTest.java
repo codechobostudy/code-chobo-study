@@ -104,6 +104,7 @@ public class NotiServiceTest {
     public void testRegisterNotiUsers_userIdxNull() throws IOException {
         NotiDTO notiDTO = new NotiDTOBuilderData_BoardFirst().buildData();
         List<MockUserDTO> watchUserList = new ArrayList<>();
+        given_userDTO_1.setIdx(0);
         watchUserList.add(given_userDTO_1);
 
         // when
@@ -238,5 +239,23 @@ public class NotiServiceTest {
         // then
         assertThat(resultNotiCntDTO, is(notNullValue()));
         assertThat(notiCntDTO.getUserDTO(), is(nullValue()));
+    }
+
+    /*
+     [] 특정 내용의 지켜보기 설정
+        [v] Watch Entity 설정 및 Insert WatchRepository
+        [] Service Method
+     [] 특정 내용의 지켜보기 해제
+        [] 로그인한 사용자의 특정 내용의 지켜보기 조회
+     [] 특정 내용의 지켜보기를 설정한 모든 사용자목록 조회
+     */
+    @Test
+    public void testSetupWatch() {
+
+    }
+
+    @Test
+    public void testClearWatch() {
+
     }
 }

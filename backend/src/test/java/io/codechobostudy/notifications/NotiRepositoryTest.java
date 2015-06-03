@@ -6,6 +6,8 @@ import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
+import io.codechobostudy.notifications.domain.Watch;
+import io.codechobostudy.notifications.dto.WatchDTO;
 import io.codechobostudy.notifications.dto.NotiDTO;
 import io.codechobostudy.notifications.fixture.NotiDTOBuilderData_BoardFirst;
 import io.codechobostudy.notifications.fixture.UserDTOBuilderData_First;
@@ -13,6 +15,7 @@ import io.codechobostudy.notifications.fixture.UserDTOBuilderData_Second;
 import io.codechobostudy.notifications.repository.MockNotiBuilder;
 import io.codechobostudy.notifications.repository.NotiCntRepository;
 import io.codechobostudy.notifications.repository.NotiRepository;
+import io.codechobostudy.notifications.repository.WatchRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,10 @@ public class NotiRepositoryTest {
     @Autowired
     private MockNotiBuilder notiBuilder;
 
+    @Autowired
+    private WatchRepository watchRepository;
+
+    // TODO: delete given_user_1, given_user_2
     private MockUser given_user_1;
     private MockUser given_user_2;
     private MockUserDTO given_userDTO_1;
@@ -133,4 +140,5 @@ public class NotiRepositoryTest {
     public void convert_notiDTO_toDomain() {
 
     }
+
 }
