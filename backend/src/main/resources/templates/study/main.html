@@ -4,17 +4,81 @@
     <title>Study Group</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
+    <script th:src="@{/webjars/underscorejs/1.8.3/underscore.js}"></script>
+    <script th:src="@{/webjars/backbonejs/1.1.2/backbone.js}"></script>
     <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+
+    <script type="text/javaScript">
+        function studyJoin(studyId){
+            document.studyRegisterForm.action = "/study/join/";
+            document.studyRegisterForm.studyId.value=studyId;
+            document.studyRegisterForm.submit();
+        }
+        function studyFind(){
+            document.studyRegisterForm.action = "/study/find/";
+            document.studyRegisterForm.submit();
+        }
+    </script>
+
 </head>
 <body>
-<div th:each="data : ${studyList}">
-    <span th:text="${data.studyName}" ></span>
-</div>
-<form name="studyRegisterForm" method="POST" th:action="@{/study/main/}">
-    <p><input type="text" name="studyName" placeholder="그룹명"/></p>
-    <p><input type="text" name="studyDesc" placeholder="그룹설명"/></p>
-    <button type="submit">확인</button>
-</form>
+
+
+    <div th:each="data : ${studyList}">
+        <span th:text="${data.studyName}" ></span>
+        <a href="javascript:studyJoin('${data.studyId}')"> 가입 </a>
+    </div>
+
+
+    <form name="studyRegisterForm" method="POST" th:action="@{/study/main/}">
+        <input type="hidden" name="studyId" value=""/>
+        <p><input type="text" name="studyName" placeholder="그룹명"/></p>
+        <p><input type="text" name="studyDesc" placeholder="그룹설명"/></p>
+        <button type="submit">확인</button>
+        <input type="button" onclick="studyFind()" value="찾기"/>
+    </form>
+    <br/>
+    <span>-----------------------------------------------</span>
+    <br/>
+
+    <div id="studyBackbone">
+        <h4> study </h4>
+        <h5> dsc </h5>
+    </div>
+    <script id="studyTemplate" type="text/template">
+        <h4> <%= studyName %></h4>
+        <h5> <%= studyDesc %> </h5>
+    </script>
+
+
+<script type="text/javaScript">
+    (function ($){
+       var StudyGroupModel = Backbone.Model.extend({
+           defaults:{
+               studyName : "스터디 그룹",
+               studyDesc : ""
+            }
+       });
+        var StudyView = Backbone.View.extend({
+            tagName:"div",
+            className : "studyContainer",
+            template : $('#studyTemplate').html(),
+            render:function(){
+                var tmpl = _.template(this.template);
+                this.$el.html(tmpl(this.model.toJSON()));
+                return this;
+            }
+        });
+        var studyModel = new StudyGroupModel({
+           studyName : "스터디 그룹!",
+            studyDesc : "스터디 설명이오~"
+        });
+        var studyView = new  StudyView({model : studyModel});
+        var s =studyView.render().el;
+        $('#studyBackbone').html(s);
+    })(jQuery);
+</script>
+
 </body>
 </html>

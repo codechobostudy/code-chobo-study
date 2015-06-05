@@ -3,13 +3,14 @@ package io.codechobostudy.study.controller
 import javax.servlet.http.HttpServletRequest
 
 import io.codechobostudy.sample.service.SampleService
-import io.codechobostudy.study.domain.StudyDomain
+import io.codechobostudy.study.domain.StudyGroupDomain
 import io.codechobostudy.study.service.StudyService
+import io.codechobostudy.user.domain.UserDomain
+import io.codechobostudy.user.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation._
-
 
 
 /**
@@ -21,14 +22,37 @@ class StudyController {
   @Autowired
   private var studyService: StudyService = _
 
-  @RequestMapping(value = Array("/study/main"))
-  def main (study : StudyDomain, model: Model) :String = {
-    if(study != null)
-      studyService.create(study)
+  @Autowired
+  private var userService: UserService = _
 
-    model.addAttribute("studyList",studyService.getAllCategory )
-    model.addAttribute("het","hey" )
+  @RequestMapping(value = Array("/study/main"))
+  def studyMain(study: StudyGroupDomain, model: Model): String = {
+    model.addAttribute("studyList", studyService.getAllStudyGroup)
+    model.addAttribute("het", "hey")
     "/study/main"
   }
+
+  @RequestMapping(value = Array("/study/join"))
+  def studyJoin(study: StudyGroupDomain, model: Model): String = {
+
+    val user = userService.getAllUser() get 0
+//    val group = new StudyGroupJoinDomain
+//    group.setId(study id)
+//    group.setAuth("R")
+//    group.setUserId(user.getUserId)
+//    studyService.createJoin(group)
+
+    model.addAttribute("studyList", studyService.getAllStudyGroup)
+    model.addAttribute("het", "hey")
+    "/study/main"
+  }
+
+
+  @RequestMapping(value = Array("/study/find"))
+  def studyFind(study: StudyGroupDomain, model: Model): String = {
+    model.addAttribute("studyList", studyService.findGroup(study studyName))
+    "/study/main"
+  }
+
 
 }

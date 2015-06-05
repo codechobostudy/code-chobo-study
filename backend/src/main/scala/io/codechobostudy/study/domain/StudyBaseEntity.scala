@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import scala.beans.BeanProperty
 
 @MappedSuperclass
-class StudyEntity {
+class StudyBaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,12 +27,12 @@ class StudyEntity {
 
   @PrePersist
   def created = {
-    this.updatedAt = new Date()
-    this.createdAt = this.updatedAt
+  this.updatedAt = new Date()
+  this.createdAt = this.updatedAt
   }
 
   @PreUpdate
   def updated = {
-    this.updatedAt = new Date()
+  this.updatedAt = new Date()
   }
 }
