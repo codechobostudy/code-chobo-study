@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board master list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+
+<div>게시판 목록</div>
+
+<div style="margin:10px">
+    <ul>
+        <li><a href="/board/master/createPage">게시판 등록 페이지 이동 </a></li>
+    </ul>
+</div>
+
+<table border="1">
+    <tbody>
+        <tr>
+            <th>게시판id</th>
+            <th>게시판명</th>
+            <th>게시판설명</th>
+        </tr>
+        <tr th:each="data : ${boardMaster}">
+            <td><span th:text="${data.boardId}"></span></td>
+            <td><a th:href="@{'/board/'+${data.boardId}+'/list'}">게시글 목록 </a>
+                <a th:href="@{'/board/master/show/'+${data.boardId}}"> <span th:text="${data.boardNm}"></span></a></td>
+            <td><span th:text="${data.boardEtc}"></span></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

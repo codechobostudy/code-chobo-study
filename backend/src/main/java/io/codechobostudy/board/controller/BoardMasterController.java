@@ -32,24 +32,24 @@ public class BoardMasterController {
     @RequestMapping(value = ("/create"),method = RequestMethod.POST)
     public String boardCreate (BoardMaster master, Model model){
 
-        model.addAttribute("boardMaster", boardMasterService.boardCreate(master));
+        boardMasterService.boardCreate(master);
         return "boardMaster create " ;
 
     }
 
     @RequestMapping(value = ("/list"),method = RequestMethod.GET)
-    public String boardList (BoardMaster master, Model model){
+    public ModelAndView boardList (BoardMaster master, Model model){
 
-        boardMasterService.boardList();
-        return "boardMaster list " ;
+        model.addAttribute("boardMaster", boardMasterService.boardList());
+        return new ModelAndView("/board/master/list");
 
     }
 
-    @RequestMapping(value = ("/show"),method = RequestMethod.GET)
-    public String boardShow (BoardMaster master, Model model){
+    @RequestMapping(value = ("/show/{id}"),method = RequestMethod.GET)
+    public ModelAndView boardShow (@PathVariable("id") Long id, Model model){
 
-        boardMasterService.boardShow(master);
-        return "boardMaster show " ;
+        model.addAttribute("boardMaster", boardMasterService.boardShow(id));
+        return new ModelAndView("/board/master/show");
 
     }
 

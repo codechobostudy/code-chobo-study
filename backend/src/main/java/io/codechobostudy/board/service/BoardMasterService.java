@@ -25,8 +25,8 @@ public class BoardMasterService {
         return  boardMasterRepository.findAll();
     }
 
-    public BoardMaster boardShow(BoardMaster master){
-        return boardMasterRepository.findOne(master.getBoardId());
+    public BoardMaster boardShow(Long id){
+        return boardMasterRepository.findOne(id);
     }
 
     public Long boardUpdate(BoardMaster master){

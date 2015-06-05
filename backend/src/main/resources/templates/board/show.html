@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board master list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+
+<div>게시글 상세 </div>
+
+<div style="margin:10px">
+    <ul>
+        <li><a th:href="@{'/board/'+${board.boardId}+'/list'}">게시글 목록 페이지 이동 </a></li>
+    </ul>
+</div>
+
+<table border="1">
+    <tbody>
+    <tr>
+        <th>게시판id</th>
+        <td><span th:text="${board.boardId}"></span></td>
+        <th>글상태</th>
+        <td><span th:text="${board.status}"></span></td>
+    </tr>
+    <tr>
+        <th>제목</th>
+        <td colspan="3"><span th:text="${board.subject}"></span></td>
+    </tr>
+    <tr>
+        <th>작성자</th>
+        <td><span th:text="${board.regName}"></span></td>
+        <th>작성일</th>
+        <td><span th:text="${board.regDate}"></span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

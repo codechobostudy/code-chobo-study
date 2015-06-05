@@ -42,22 +42,22 @@ public class BoardController {
     }
 
     @RequestMapping(value = ("/{boardId}/list"),method = RequestMethod.GET)
-    public String boardList (Board board, Model model, @PathVariable("boardId") Long boardId){
+    public ModelAndView boardList (Board board, Model model, @PathVariable("boardId") Long boardId){
 
         board.setBoardId(boardId);
+        model.addAttribute("board", boardService.boardList());
 
-        boardService.boardList();
-        return "board list " ;
-
+        return new ModelAndView("/board/list");
     }
 
-    @RequestMapping(value = ("/{boardId}/show"),method = RequestMethod.GET)
-    public String boardShow (Board board, Model model, @PathVariable("boardId") Long boardId){
+    @RequestMapping(value = ("/{boardId}/show/{id}"),method = RequestMethod.GET)
+    public ModelAndView boardShow (Board board, Model model, @PathVariable("boardId") Long boardId,@PathVariable("id") Long id){
 
         board.setBoardId(boardId);
 
-        boardService.boardShow(board);
-        return "board show " ;
+        model.addAttribute("board", boardService.boardShow(id));
+
+        return new ModelAndView("/board/show");
 
     }
 

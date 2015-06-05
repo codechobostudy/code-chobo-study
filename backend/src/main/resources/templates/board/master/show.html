@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board master list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+
+<div>게시판 상세 </div>
+
+<div style="margin:10px">
+    <ul>
+        <li><a href="/board/master/list">게시판 목록 페이지 이동 </a></li>
+    </ul>
+</div>
+
+<table border="1">
+    <tbody>
+    <tr>
+        <th>게시판id</th>
+        <td><span th:text="${boardMaster.boardId}"></span></td>
+        <th>게시판명</th>
+        <td><span th:text="${boardMaster.boardNm}"></span></td>
+    </tr>
+    <tr>
+        <th>게시판설명</th>
+        <td colspan="3"><span th:text="${boardMaster.boardEtc}"></span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

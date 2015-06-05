@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+
+<div>게시글 목록</div>
+
+<table border="1">
+    <tbody>
+    <tr>
+        <th>게시판id</th>
+        <th>게시글id</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>상태</th>
+    </tr>
+    <tr th:each="data : ${board}">
+        <td th:text="${data.boardId}"></td>
+        <td th:text="${data.id}"></td>
+        <td><a th:href="@{'/board/'+${data.boardId}+'/show/'+${data.id}}"><span th:text="${data.subject}"></span></a></td>
+        <td th:text="${data.regName}"></td>
+        <td th:text="${data.regDate}"></td>
+        <td th:text="${data.status}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
