@@ -50,7 +50,7 @@
             };
 
             if (spanValue == "on"){
-                fnClearWatch(formData);
+                fnDestroyWatch(formData);
             } else if (spanValue == "off"){
                 fnSetupWatch(formData);
             }
@@ -64,19 +64,19 @@
                 contentType: "application/json",
                 data: JSON.stringify(formData)
             }).done(function(resultData) {
-                fnWatchOn();
+                fnWatchOn(resultData);
             });
         };
 
-        var fnClearWatch = function(formData) {
+        var fnDestroyWatch = function(formData) {
             $.ajax({
-                url: "/watch/clear",
+                url: "/watch/destroy",
                 method: "post",
                 type: "json",
                 contentType: "application/json",
                 data: JSON.stringify(formData)
             }).done(function(resultData){
-                fnWatchOff();
+                fnWatchOff(resultData);
             });
         };
 

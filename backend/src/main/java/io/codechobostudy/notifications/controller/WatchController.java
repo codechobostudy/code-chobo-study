@@ -30,6 +30,14 @@ public class WatchController {
     public String setupWatch(@RequestBody WatchDTO watchDTO){
         MockUserDTO userDTO = userService.getUser("Id_jinhyun");
         watchService.setupWatch(watchDTO, userDTO);
-        return "success";
+        return "on";
+    }
+
+    @RequestMapping(value = "/destroy")
+    @ResponseBody
+    public String destroyWatch(@RequestBody WatchDTO watchDTO){
+        MockUserDTO userDTO = userService.getUser("Id_jinhyun");
+        watchService.destroyWatchUser(watchDTO, userDTO);
+        return "off";
     }
 }

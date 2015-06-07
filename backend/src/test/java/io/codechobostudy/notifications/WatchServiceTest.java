@@ -148,4 +148,52 @@ public class WatchServiceTest {
         assertThat(watchStatus, is("off"));
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void testDestoryWatchUser_watchIdxNull() {
+        // given
+        WatchDTO watchDTO_1 = new WatchDTO();
+        watchDTO_1.setWatchModuleIdx(1);
+        watchDTO_1.setWatchModuleName("board");
+        watchDTO_1.setWatchUserDTO(given_userDTO_1);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_1));
+
+        // when
+        watchService.destroyWatchUser(watchDTO_1, given_userDTO_1);
+    }
+
+    /*
+    로그인 사용자가 선택한 글에 대한 지켜보기 해제
+     */
+    @Test
+    public void testDestroyWatchUser() {
+        // given
+        WatchDTO watchDTO_1 = new WatchDTO();
+        watchDTO_1.setWatchModuleIdx(1);
+        watchDTO_1.setWatchModuleName("board");
+        watchDTO_1.setWatchUserDTO(given_userDTO_1);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_1));
+
+        WatchDTO watchDTO_2 = new WatchDTO();
+        watchDTO_2.setWatchModuleIdx(2);
+        watchDTO_2.setWatchModuleName("board");
+        watchDTO_2.setWatchUserDTO(given_userDTO_1);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_2));
+
+        WatchDTO watchDTO_3 = new WatchDTO();
+        watchDTO_3.setWatchModuleIdx(3);
+        watchDTO_3.setWatchModuleName("board");
+        watchDTO_3.setWatchUserDTO(given_userDTO_2);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_3));
+
+        // when
+        watchService.destroyWatchUser(watchDTO_1, given_userDTO_1);
+
+        // then
+        List<Watch> watchList = watchRepository.findAll();
+        assertThat(watchList.size(), is(2));
+        assertThat(watchList.get(0).getWatchIdx(), is(2));
+        assertThat(watchList.get(0).getWatchUser().getUserName(), is("jinhyun"));
+        assertThat(watchList.get(1).getWatchIdx(), is(3));
+        assertThat(watchList.get(1).getWatchUser().getUserName(), is("changhwaoh"));
+    }
 }

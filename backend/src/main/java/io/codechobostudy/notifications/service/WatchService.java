@@ -43,4 +43,18 @@ public class WatchService {
             return "off";
         }
     }
+
+    /**
+     * 로그인 사용자에 대한 선택한 글에 대한 지켜보기 해제
+     * @param watchDTO
+     * @param userDTO
+     */
+    public void destroyWatchUser(WatchDTO watchDTO, MockUserDTO userDTO) {
+        WatchDTO dbWatchDTO = getWatchUser(watchDTO, userDTO);
+        Watch watch = watchDTO.toDomain(dbWatchDTO);
+        if (watch.getWatchIdx() == 0){
+            throw new IllegalArgumentException();
+        }
+        watchRepository.delete(watch);
+    }
 }
