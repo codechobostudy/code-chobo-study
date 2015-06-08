@@ -31,5 +31,14 @@
     </tr>
     </tbody>
 </table>
+
+
+<div>
+    <a th:href="@{'/board/master/updatePage/'+${boardId}}">수정</a>
+    <form name="boardDeleteForm" th:method="DELETE" th:action="@{'/board/master/'+${boardId}+'/delete/'}">
+        <button type="submit">삭제</button>
+    </form>
+</div>
+
 </body>
 </html>

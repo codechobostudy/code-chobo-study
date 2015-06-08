@@ -45,28 +45,38 @@ public class BoardMasterController {
 
     }
 
-    @RequestMapping(value = ("/show/{id}"),method = RequestMethod.GET)
-    public ModelAndView boardShow (@PathVariable("id") Long id, Model model){
+    @RequestMapping(value = ("/show/{boardId}"),method = RequestMethod.GET)
+    public ModelAndView boardShow (@PathVariable("boardId") Long boardId, Model model){
 
-        model.addAttribute("boardMaster", boardMasterService.boardShow(id));
+        model.addAttribute("boardMaster", boardMasterService.boardShow(boardId));
         return new ModelAndView("/board/master/show");
 
     }
 
+    @RequestMapping(value = ("/updatePage/{boardId}"))
+    public ModelAndView updatePage (BoardMaster master, Model model, @PathVariable("boardId") Long boardId){
 
-    @RequestMapping(value = ("/update/{id}"),method = RequestMethod.PUT)
+        model.addAttribute("boardMaster", boardMasterService.boardShow(boardId));
+        model.addAttribute("boardId", boardId);
+
+        return new ModelAndView("/board/master/update");
+
+    }
+
+    @RequestMapping(value = ("/update/{boardId}"),method = RequestMethod.PUT)
     public String boardUpdate (BoardMaster master, Model model,
-                               @PathVariable("id") Long id){
-
+                               @PathVariable("boardId") Long boardId){
+        master.setBoardId(boardId);
         boardMasterService.boardUpdate(master);
         return "boardMaster update " ;
 
     }
 
-    @RequestMapping(value = ("/delete/{id}"),method = RequestMethod.DELETE)
+    @RequestMapping(value = ("/delete/{boardId}"),method = RequestMethod.DELETE)
     public String boardDelete (BoardMaster master, Model model,
-                               @PathVariable("id") Long id){
+                               @PathVariable("boardId") Long boardId){
 
+        master.setBoardId(boardId);
         boardMasterService.boardDelete(master);
         return "boaboardMasterrd delete " ;
 

@@ -35,7 +35,18 @@
         <th>작성일</th>
         <td><span th:text="${board.regDate}"></span></td>
     </tr>
+    <tr>
+        <td colspan="3"><span th:text="${board.content}"></span></td>
+    </tr>
     </tbody>
 </table>
+
+<div>
+<a th:href="@{'/board/'+${board.boardId}+'/updatePage/'+${board.id}}">수정</a>
+<form name="boardDeleteForm" th:method="DELETE" th:action="@{'/board/'+${boardId}+'/delete/'+${id}}">
+    <button type="submit">삭제</button>
+</form>
+</div>
+
 </body>
 </html>

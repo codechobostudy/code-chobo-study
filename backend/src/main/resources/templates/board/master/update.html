@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board master</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+<form name="boardMasterRegisterForm" th:method="PUT" th:action="@{'/board/master/update/'+${boardId}}">
+    <p><input type="text" name="boardNm" placeholder="게시판명" th:value="${boardMaster.boardNm}"/></p>
+    <p><input type="text" name="boardEtc" placeholder="게시판설명" th:value="${boardMaster.boardEtc}"/></p>
+    <p>
+        <select name="boardType" placeholder="게시판타입">
+            <option value="1">공지형</option>
+        </select>
+    </p>
+    <button type="submit">확인</button>
+</form>
+</body>
+</html>

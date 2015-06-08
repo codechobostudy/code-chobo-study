@@ -46,6 +46,7 @@ public class BoardController {
 
         board.setBoardId(boardId);
         model.addAttribute("board", boardService.boardList());
+        model.addAttribute("boardId", boardId);
 
         return new ModelAndView("/board/list");
     }
@@ -61,6 +62,18 @@ public class BoardController {
 
     }
 
+    @RequestMapping(value = ("/{boardId}/updatePage/{id}"))
+    public ModelAndView boardUpdatePage (Board board, Model model, @PathVariable("id") Long id
+                                        , @PathVariable("boardId") Long boardId){
+
+        board.setId(id);
+        model.addAttribute("board", boardService.boardShow(id));
+        model.addAttribute("boardId", boardId);
+        model.addAttribute("id", id);
+
+        return new ModelAndView("/board/update");
+
+    }
 
     @RequestMapping(value = ("/{boardId}/update/{id}"),method = RequestMethod.PUT)
     public String boardUpdate (Board board, Model model,
@@ -68,6 +81,7 @@ public class BoardController {
                                @PathVariable("boardId") Long boardId){
 
         board.setBoardId(boardId);
+        board.setId(id);
         boardService.boardUpdate(board);
         return "board update " ;
 
