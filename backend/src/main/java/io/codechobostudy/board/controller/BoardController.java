@@ -2,7 +2,6 @@ package io.codechobostudy.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codechobostudy.board.domain.Board;
-import io.codechobostudy.board.repository.BoardRepository;
 import io.codechobostudy.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

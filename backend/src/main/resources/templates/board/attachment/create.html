@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script data-main="/js/app" src="/webjarsjs"></script>
+    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
+</head>
+<body>
+<form name="boardMasterRegisterForm" method="POST" enctype="multipart/form-data" th:action="@{/boardAttach/1/fileUpload/}">
+    <p><input type="text" name="subject" placeholder="제목"/></p>
+    <p><input type="text" name="regName" placeholder="등록자명"/></p>
+    <p><input type="text" name="regId" placeholder="등록자Id"/></p>
+    <p><input type="file" name="files" placeholder="파일"/></p>
+    <!-- 
+    <p><input type="file" name="files" placeholder="파일"/></p>
+     -->
+    <p><textarea cols="10" rows="5" name="content" placeholder="내용"></textarea></p>
+    <button type="submit">확인</button>
+</form>
+</body>
+</html>
