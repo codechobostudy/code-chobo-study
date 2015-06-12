@@ -19,14 +19,14 @@ class StudyGroupDomain extends StudyBaseEntity{
   var studyDesc: String = _
 
   @BeanProperty
-  @OneToOne
-  @JoinColumn(name="userid")
-  var leader: UserDomain =_
+//  @Column(name = "leader_id", nullable = false, length = 20)
+  var leader: String =_
 
+  /*
   @BeanProperty
   @OneToMany
-  @JoinColumn(name="userid")
-  var members : java.util.List[UserDomain] = _
-
+  @JoinColumn("member_id")
+  var members : java.util.List[String] = _
+ */
   override def toString: String = "studyName : "+studyName+", studyDesc : "+studyDesc
 }

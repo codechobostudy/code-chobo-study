@@ -3,66 +3,121 @@
 <head>
     <title>Study Group</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
-    <script th:src="@{/webjars/underscorejs/1.8.3/underscore.js}"></script>
-    <script th:src="@{/webjars/backbonejs/1.1.2/backbone.js}"></script>
-    <script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
-
-    <script type="text/javaScript">
-        function studyJoin(studyId){
-            document.studyRegisterForm.action = "/study/join/";
-            document.studyRegisterForm.studyId.value=studyId;
-            document.studyRegisterForm.submit();
-        }
-        function studyFind(){
-            document.studyRegisterForm.action = "/study/find/";
-            document.studyRegisterForm.submit();
-        }
-    </script>
-
 </head>
 <body>
+        <div id="studyApp" class="continer">
+            <div class="col-lg-3 well">
+                <div class="form-group">
+                    <label for="userId">사용자 아이디</label>
+                    <input th:type="text" id="userId" name="userId" th:value="${session.userId}" />
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createModal">
+                        스터디그룹 생성
+                    </button>
+                </div>
+            </div>
+            <div id="body" class="col-lg-8 col-lg-offset-1 well">
+                <div class="row">
+                    <div class="col-lg-3 text-center">
+                        <strong>그룹명</strong>
+                    </div>
+                    <div class="col-lg-5 col-lg-offset-1 text-center">
+                        <strong>그룹 설명</strong>
+                    </div>
+                    <div class="col-lg-2 text-center">
+                        <strong>리더</strong>
+                    </div>
+                    <div class="col-lg-1 text-center">
+                        &nbsp;
+                    </div>
+                </div>
+                <div id="studyGroupList">
+                </div>
+            </div>
+            <footer>
+                <div class="continer">
+                    <div  id="footer" class="row">
+                    </div>
+                </div>
+            </footer>
 
+            <script id="studyTemplate" type="text/template">
+                <div class="col-lg-3">
+                    <%= studyName %>
+                </div>
+                <div class="col-lg-5 col-lg-offset-1">
+                    <%= studyDesc %>
+                </div>
+                <div class="col-lg-2">
+                    <%= studyLeader %>
+                </div>
+                <div class="col-lg-1">
+                    <a href="javascript:studyJoin('<%= id %>')"> 가입 </a>
+                </div>
+            </script>
+            <!-- Modal -->
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="studyModalLabel" aria-hidden="true">
+                <form id="studyRegisterForm" name="studyRegisterForm" method="POST" th:action="@{/study/create}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="studyModalLabel">스터디그룹 생성</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id" value=""/>
+                                <div clas="form-group">
+                                    <label for="studyName">스터디 그룹 이름</label>
+                                    <input type="text" class="form-control" name="studyName" id="studyName"/>
+                                </div>
+                                <div clas="form-group">
+                                    <label for="studyDesc">스터디 그룹 설명</label>
+                                    <input type="text" class="form-control" name="studyDesc" id="studyDesc"/>
+                                </div>
+                                <input type="button" onclick="studyFind()" value="찾기"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">만들기</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</body>
 
-    <div th:each="data : ${studyList}">
-        <span th:text="${data.studyName}" ></span>
-        <a href="javascript:studyJoin('${data.studyId}')"> 가입 </a>
-    </div>
-
-
-    <form name="studyRegisterForm" method="POST" th:action="@{/study/main/}">
-        <input type="hidden" name="studyId" value=""/>
-        <p><input type="text" name="studyName" placeholder="그룹명"/></p>
-        <p><input type="text" name="studyDesc" placeholder="그룹설명"/></p>
-        <button type="submit">확인</button>
-        <input type="button" onclick="studyFind()" value="찾기"/>
-    </form>
-    <br/>
-    <span>-----------------------------------------------</span>
-    <br/>
-
-    <div id="studyBackbone">
-        <h4> study </h4>
-        <h5> dsc </h5>
-    </div>
-    <script id="studyTemplate" type="text/template">
-        <h4> <%= studyName %></h4>
-        <h5> <%= studyDesc %> </h5>
-    </script>
-
+<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/underscorejs/1.8.3/underscore.js}"></script>
+<script th:src="@{/webjars/backbonejs/1.1.2/backbone.js}"></script>
+<script th:src="@{/webjars/requirejs/2.1.17/require.min.js}"></script>
 
 <script type="text/javaScript">
+
+    function studyJoin(studyId){
+
+        document.studyRegisterForm.id.value=studyId;
+        $('#studyRegisterForm').action("/study/join/").submit();
+    }
+    function studyFind(){
+        document.studyRegisterForm.action = "/study/find/";
+        document.studyRegisterForm.submit();
+    }
     (function ($){
-       var StudyGroupModel = Backbone.Model.extend({
-           defaults:{
-               studyName : "스터디 그룹",
-               studyDesc : ""
+        // 백본 모델
+        var StudyGroupModel = Backbone.Model.extend({
+            defaults:{
+                studyName : "스터디 그룹",
+                studyDesc : ""
             }
-       });
+        });
+        // 백본 뷰 1line
         var StudyView = Backbone.View.extend({
             tagName:"div",
-            className : "studyContainer",
+            className : "studyContainer row",
             template : $('#studyTemplate').html(),
             render:function(){
                 var tmpl = _.template(this.template);
@@ -70,15 +125,64 @@
                 return this;
             }
         });
+        // 백본 컬렉션
+        window.StudyGroupList = Backbone.Collection.extend({
+            url: '/study/list'
+        });
+        window.StudyGroupList = new StudyGroupList();
+        //StudyGroupList.fetch();
+
+        // 백본 앱 뷰
+        var StudyAppView = Backbone.View.extend({
+            el: $("#studyApp"),
+            // Our template for the line of statistics at the bottom of the app.
+//            statsTemplate: _.template($('#stats-template').html()),
+            // Delegated events for creating new items, and clearing completed ones.
+//            events: {
+//                "keypress #new-todo":  "createOnEnter",
+//                "click #clear-completed": "clearCompleted",
+//                "click #toggle-all": "toggleAllComplete"
+//            },
+            initialize: function() {
+                this.main = this.$("#body");
+//                this.allCheckbox = this.$("#toggle-all")[0];
+
+                this.listenTo(StudyGroupList, 'add', this.addOne);
+                this.listenTo(StudyGroupList, 'reset', this.addAll);
+                this.listenTo(StudyGroupList, 'all', this.render);
+                StudyGroupList.fetch();
+            },
+
+            // Re-rendering the App just means refreshing the statistics -- the rest
+            // of the app doesn't change.
+            render: function() {
+            },
+            // Add a single todo item to the list by creating a view for it, and
+            // appending its element to the `<ul>`.
+            addOne: function(study) {
+                var view = new StudyView({model: study});
+                console.log("addone!")
+                this.$("#studyGroupList").append(view.render().el);
+            },
+            // Add all items in the **Todos** collection at once.
+            addAll: function() {
+                StudyGroupList.each(this.addOne, this);
+            }
+        });
+
+        // Finally, we kick things off by creating the **App**.
+        var App = new StudyAppView;
+
+        /*
         var studyModel = new StudyGroupModel({
-           studyName : "스터디 그룹!",
+            studyName : "스터디 그룹!",
             studyDesc : "스터디 설명이오~"
         });
         var studyView = new  StudyView({model : studyModel});
         var s =studyView.render().el;
         $('#studyBackbone').html(s);
+        */
+
     })(jQuery);
 </script>
-
-</body>
 </html>
