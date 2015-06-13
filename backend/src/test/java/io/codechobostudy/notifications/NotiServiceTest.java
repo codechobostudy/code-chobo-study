@@ -6,6 +6,7 @@ import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
+import io.codechobostudy.notifications.dto.RelayNotiDTO;
 import io.codechobostudy.notifications.dto.NotiCntDTO;
 import io.codechobostudy.notifications.dto.NotiDTO;
 import io.codechobostudy.notifications.dto.NotiViewDTO;
@@ -82,7 +83,13 @@ public class NotiServiceTest {
 
     @Test
     public void testRelayNoti() throws IOException {
-        notiService.relayNoti("");
+        // given
+        RelayNotiDTO relayNotiDTO = null;
+
+        // when
+        notiService.relayNoti(relayNotiDTO);
+
+        // then
     }
 
     @Test

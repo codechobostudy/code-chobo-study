@@ -8,6 +8,7 @@ import io.codechobostudy.mock.user.repository.MockUserRepository;
 import io.codechobostudy.mock.user.service.MockUserService;
 import io.codechobostudy.notifications.domain.Noti;
 import io.codechobostudy.notifications.domain.NotiCnt;
+import io.codechobostudy.notifications.dto.RelayNotiDTO;
 import io.codechobostudy.notifications.dto.NotiCntDTO;
 import io.codechobostudy.notifications.dto.NotiDTO;
 import io.codechobostudy.notifications.dto.NotiViewDTO;
@@ -36,9 +37,11 @@ public class NotiService {
     private SimpMessagingTemplate simpMsgTemplate;
     @Autowired
     private MockUserService mockUserService;
+    @Autowired
+    private WatchService watchService;
 
     // 알림 중계 서비스
-    public void relayNoti(String jsonData) {
+    public void relayNoti(RelayNotiDTO relayNotiDTO) {
         /*
         ... jsonData to relayNoti Domain
             String module
@@ -53,13 +56,7 @@ public class NotiService {
         // TODO: temp Method (not exist jsonData)
         NotiDTO notiDTO = notiBuilder.buildNotiData(4, "qna");
 
-        /*
-        ... watch 테이블에서 module의 pk가 등록되어있는 사용자 조회
-            watchUserList =
-         */
-
-        // TODO: temp Method (not exist Watch Table) - watch 구현전까지 등록되어있는 모든 사용자에게 알림처리
-        List <MockUserDTO> watchUserList = mockUserService.getUserList();
+        List<MockUserDTO> watchUserList = watchService.getWatchUserList(relayNotiDTO);
 
         registerNotiUsers(notiDTO, watchUserList);
         pushUpdatedData(watchUserList);
@@ -107,6 +104,10 @@ public class NotiService {
     }
 
     public void pushUpdatedData(List<MockUserDTO> watchUserList) {
+        if (watchUserList.size() == 0 || watchUserList == null){
+            return;
+        }
+
         for (MockUserDTO userDTO : watchUserList){
             if (!userDTO.getUserId().equals("id_Jinhyun")){
                 continue;

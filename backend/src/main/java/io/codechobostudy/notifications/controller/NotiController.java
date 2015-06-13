@@ -1,7 +1,7 @@
 package io.codechobostudy.notifications.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.codechobostudy.notifications.domain.RelayNoti;
+import io.codechobostudy.notifications.dto.RelayNotiDTO;
 import io.codechobostudy.notifications.service.MockNotiService;
 import io.codechobostudy.notifications.service.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +62,8 @@ public class NotiController {
     // url이 마음에 안드네..
     @RequestMapping(value = "/call/relayNoti")
     @ResponseBody
-    public String relayNoti(@RequestBody RelayNoti relayNoti) {
-        notiService.relayNoti("");
+    public String relayNoti(@RequestBody RelayNotiDTO relayNotiDTO) {
+        notiService.relayNoti(relayNotiDTO);
         return "success";
     }
 }

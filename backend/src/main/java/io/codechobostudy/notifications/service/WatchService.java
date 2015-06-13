@@ -3,10 +3,14 @@ package io.codechobostudy.notifications.service;
 import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.notifications.domain.Watch;
+import io.codechobostudy.notifications.dto.RelayNotiDTO;
 import io.codechobostudy.notifications.dto.WatchDTO;
 import io.codechobostudy.notifications.repository.WatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class WatchService {
@@ -23,8 +27,8 @@ public class WatchService {
 
     public WatchDTO getWatchUser(WatchDTO watchDTO, MockUserDTO userDTO) {
         Watch watch = watchDTO.toDomain(watchDTO);
-        int moduleIdx = watch.getWatchModuleIdx();
-        String moduleName = watch.getWatchModuleName();
+        int moduleIdx = watch.getWatchModuleIdx();      // TODO: not null
+        String moduleName = watch.getWatchModuleName(); // TODO: not null
         MockUser user = userDTO.toDomain(userDTO);
 
         Watch dbWatch = watchRepository.findByWatchModuleIdxAndWatchModuleNameAndWatchUser(moduleIdx, moduleName, user);
@@ -56,5 +60,28 @@ public class WatchService {
             throw new IllegalArgumentException();
         }
         watchRepository.delete(watch);
+    }
+
+    /**
+     * 특정 내용의 지켜보기를 설정한 모든 사용자목록 조회
+     * @param relayNotiDTO
+     * @return List<MockUserDTO>
+     */
+    public List<MockUserDTO> getWatchUserList(RelayNotiDTO relayNotiDTO) {
+        WatchDTO watchDTO = new RelayNotiDTO().toWatchDTO(relayNotiDTO);
+        Watch watch = new WatchDTO().toDomain(watchDTO);
+
+        int watchModuleIdx = watch.getWatchModuleIdx();         // TODO: not null
+        String watchModuleName = watch.getWatchModuleName();    // TODO: not null
+
+        List<Watch> dbWatchList = watchRepository.findByWatchModuleIdxAndWatchModuleName(watchModuleIdx, watchModuleName);
+
+        List <MockUserDTO> userDTOList = new ArrayList<>();
+        MockUserDTO userDTO = new MockUserDTO();
+        for (Watch dbWatch : dbWatchList){
+            userDTOList.add(userDTO.toDTO(dbWatch.getWatchUser()));
+        }
+
+        return userDTOList;
     }
 }

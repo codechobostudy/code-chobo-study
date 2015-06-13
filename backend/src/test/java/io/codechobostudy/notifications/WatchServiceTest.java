@@ -4,6 +4,7 @@ import io.codechobostudy.Application;
 import io.codechobostudy.mock.user.domain.MockUser;
 import io.codechobostudy.mock.user.dto.MockUserDTO;
 import io.codechobostudy.mock.user.repository.MockUserRepository;
+import io.codechobostudy.notifications.dto.RelayNotiDTO;
 import io.codechobostudy.notifications.domain.Watch;
 import io.codechobostudy.notifications.dto.WatchDTO;
 import io.codechobostudy.notifications.fixture.UserDTOBuilderData_First;
@@ -195,5 +196,50 @@ public class WatchServiceTest {
         assertThat(watchList.get(0).getWatchUser().getUserName(), is("jinhyun"));
         assertThat(watchList.get(1).getWatchIdx(), is(3));
         assertThat(watchList.get(1).getWatchUser().getUserName(), is("changhwaoh"));
+    }
+
+    /**
+     * 특정 내용의 지켜보기를 설정한 모든 사용자목록 조회 메소드
+     */
+    @Test
+    public void testGetWatchUserList() {
+        // given: 하나의 게시글을 2명의 사용자가 지켜보기 설정
+        WatchDTO watchDTO_1 = new WatchDTO();
+        watchDTO_1.setWatchModuleIdx(1);
+        watchDTO_1.setWatchModuleName("board");
+        watchDTO_1.setWatchUserDTO(given_userDTO_1);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_1));
+
+        WatchDTO watchDTO_2 = new WatchDTO();
+        watchDTO_2.setWatchModuleIdx(1);
+        watchDTO_2.setWatchModuleName("board");
+        watchDTO_2.setWatchUserDTO(given_userDTO_2);
+        watchRepository.save(new WatchDTO().toDomain(watchDTO_2));
+
+        // when
+        RelayNotiDTO relayNotiDTO = new RelayNotiDTO();
+        relayNotiDTO.setModule("board");
+        relayNotiDTO.setPrimaryKey(1);
+        List<MockUserDTO> watchList = watchService.getWatchUserList(relayNotiDTO);
+
+        // then
+        assertThat(watchList.size(), is(2));
+        assertThat(watchList.get(0).getUserName(), is("jinhyun"));
+        assertThat(watchList.get(1).getUserName(), is("changhwaoh"));
+    }
+
+    @Test
+    public void toToWatchDTO() {
+        // given
+        RelayNotiDTO relayNotiDTO = new RelayNotiDTO();
+        relayNotiDTO.setModule("board");
+        relayNotiDTO.setPrimaryKey(1);
+
+        // when
+        WatchDTO watchDTO = new RelayNotiDTO().toWatchDTO(relayNotiDTO);
+
+        // then
+        assertThat(watchDTO.getWatchModuleIdx(), is(1));
+        assertThat(watchDTO.getWatchModuleName(), is("board"));
     }
 }
