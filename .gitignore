@@ -6,3 +6,11 @@ out
 gradlew
 gradlew.bat
 *.iml
+.classpath
+.project
+.settings/org.eclipse.jdt.core.prefs
+backend/.classpath
+backend/.project
+backend/.settings/org.eclipse.jdt.core.prefs
+backend/.settings/org.eclipse.wst.common.component
+backend/.settings/org.eclipse.wst.common.project.facet.core.xml

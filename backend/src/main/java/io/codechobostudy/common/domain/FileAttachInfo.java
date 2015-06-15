@@ -1,4 +1,4 @@
-package io.codechobostudy.board.domain;
+package io.codechobostudy.common.domain;
 
 
 import lombok.Data;
@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileAttachInfo {
     MultipartFile attachFile;
     
+    private Long boardId;
+    
     private String realFileName;
     
     private String saveFileName;
@@ -20,6 +22,5 @@ public class FileAttachInfo {
 
     private Long fileSize;
     
-    private String contentType;
     
 }
