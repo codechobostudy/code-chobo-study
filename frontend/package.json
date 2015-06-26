@@ -1,0 +1,34 @@
+{
+  "name": "GulpLearn",
+  "version": "0.0.1",
+  "description": "Learn Gulp _ gulp에 대한 학습",
+  "author": "arahansa <arahansa@naver.com>",
+  "homepage": "http://arahansa.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arahansa/learn_gulp"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "devDependencies": {
+    "gulp": "*",
+    "browser-sync": "^2.7.4",
+    "gulp-autoprefixer": "*",
+    "gulp-concat": "*",
+    "gulp-iconfont": "*",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-jasmine2-phantomjs": "^0.2.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-minify-css": "*",
+    "gulp-plumber": "*",
+    "gulp-rename": "*",
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-sourcemaps": "*",
+    "gulp-uglify": "*",
+    "gulp-util": "*",
+    "imagemin-pngquant": "^4.1.0",
+    "phantomjs": "^1.9.17"
+  }
+}
