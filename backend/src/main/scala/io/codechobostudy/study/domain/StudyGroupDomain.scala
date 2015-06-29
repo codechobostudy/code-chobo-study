@@ -1,8 +1,7 @@
 package io.codechobostudy.study.domain
 
+import java.util
 import javax.persistence._
-
-import io.codechobostudy.user.domain.UserDomain
 
 import scala.beans.BeanProperty
 
@@ -19,14 +18,25 @@ class StudyGroupDomain extends StudyBaseEntity{
   var studyDesc: String = _
 
   @BeanProperty
-//  @Column(name = "leader_id", nullable = false, length = 20)
+  @Column(name = "leader_id", nullable = false, length = 20)
   var leader: String =_
 
-  /*
   @BeanProperty
-  @OneToMany
-  @JoinColumn("member_id")
-  var members : java.util.List[String] = _
- */
-  override def toString: String = "studyName : "+studyName+", studyDesc : "+studyDesc
+  @OneToMany( targetEntity = classOf[StudyGroupMemberDomain]  ,mappedBy = "studyGroup",cascade = Array(CascadeType.ALL), fetch = FetchType.LAZY )
+  var members : java.util.List[StudyGroupMemberDomain] = _
+
+  def addMember(studyGroupMemberDomain: StudyGroupMemberDomain) ={
+    this.members.add(studyGroupMemberDomain)
+  }
+
+  override def toString: String = "studyName : "+studyName+", studyDesc : "+studyDesc + "member : " +members
+
+  private def getMembersString() :String ={
+    if(members == null) return "NO"
+    var result=""
+    for(i <- 0 to members.size()){
+      result += members.get(i).getMemberId
+    }
+    result
+  }
 }

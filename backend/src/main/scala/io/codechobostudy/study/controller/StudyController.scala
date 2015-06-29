@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.codechobostudy.Application
 import io.codechobostudy.sample.service.SampleService
-import io.codechobostudy.study.domain.StudyGroupDomain
+import io.codechobostudy.study.domain.{StudyGroupMemberDomain, StudyGroupDomain}
 import io.codechobostudy.study.service.StudyService
 import io.codechobostudy.user.domain.UserDomain
 import io.codechobostudy.user.service.UserService
@@ -30,7 +30,7 @@ class StudyController {
   @RequestMapping(value = Array("/study/main"))
   def studyMain(request: HttpServletRequest, model:Model): String = {
     getUserId(request)
-    model.addAttribute("studyList", studyService.getAllStudyGroup)
+//    model.addAttribute("studyList", studyService.getAllStudyGroup)
     "/study/main"
   }
 
@@ -49,33 +49,37 @@ class StudyController {
     studyService.getAllStudyGroup
   }
 
-  @RequestMapping(value = Array("/study/join"))
-  def studyJoin(study: StudyGroupDomain, model: Model): String = {
-
-    val user = userService.getAllUser() get 0
-//    val group = new StudyGroupJoinDomain
-//    group.setId(study id)
-//    group.setAuth("R")
-//    group.setUserId(user.getUserId)
-//    studyService.createJoin(group)
-
-    model.addAttribute("studyList", studyService.getAllStudyGroup)
-    model.addAttribute("het", "hey")
-    "/study/main"
+  @RequestMapping(value = Array("/study/join/{id}"))
+  def studyJoin(request: HttpServletRequest, model: Model, @PathVariable id : java.lang.Long): String = {
+    var member = new StudyGroupMemberDomain()
+    var studyGroup = studyService.getGroup(id)
+    member.setMemberId( getUserId(request))
+    member.setStudyGroup(studyGroup)
+    studyService.join(member)
+    studyGroup.addMember(member)
+    println(studyGroup)
+    studyMain(request,model)
   }
 
   @RequestMapping(value = Array("/study/find"))
   def studyFind(study: StudyGroupDomain, model: Model): String = {
-    model.addAttribute("studyList", studyService.findGroup(study studyName))
+    model.addAttribute("studyList", studyService.getGroup(study studyName))
     "/study/main"
+  }
+
+
+  @RequestMapping(value = Array("/study/changeId"))
+  def changeId(request: HttpServletRequest, model:Model):String = {
+    request.getSession().setAttribute("userId",request.getParameter("userId"))
+    studyMain(request,model)
   }
 
   private def getUserId(request : HttpServletRequest): String ={
     var userId = request.getSession().getAttribute("userId")
     if(userId == null){
       userId = "TEST_USER"
-      request.getSession().setAttribute("userId",userId)
     }
+    request.getSession().setAttribute("userId",userId)
     userId.toString()
   }
 

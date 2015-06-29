@@ -2,8 +2,8 @@ package io.codechobostudy.study.service
 
 import java.util
 
-import io.codechobostudy.study.domain.StudyGroupDomain
-import io.codechobostudy.study.repository.StudyRepository
+import io.codechobostudy.study.domain.{StudyGroupMemberDomain, StudyGroupDomain}
+import io.codechobostudy.study.repository.{StudyMemberRepository, StudyRepository}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,12 +14,17 @@ class StudyService {
 
   @Autowired
   private var studyRepository: StudyRepository = _
+  @Autowired
+  private var studyMemberRepository: StudyMemberRepository = _
 
   def create(study: StudyGroupDomain): StudyGroupDomain = {
     studyRepository.save(study)
   }
 
-  def findGroup(studyName : String) : util.List[StudyGroupDomain] = {
+  def getGroup(id : java.lang.Long) : StudyGroupDomain = {
+    studyRepository.findOne(id)
+  }
+  def getGroup(studyName : String) : util.List[StudyGroupDomain] = {
     studyRepository.findByStudyName(studyName)
   }
 
@@ -35,5 +40,8 @@ class StudyService {
     studyRepository.findAll()
   }
 
+  def join(member: StudyGroupMemberDomain)={
+    studyMemberRepository.save(member)
+  }
 
 }
