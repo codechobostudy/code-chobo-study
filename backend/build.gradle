@@ -62,8 +62,8 @@ cobertura {
     coverageExcludes = ['.*common\\.RequireJSController.*'
                         ,'.*config\\.SimpleCORSFilter.*'
                         ,'.*config\\.WebConfig.*'
-                        ,'.*home\\.*controller\\.HomeController.*'
-                        ,'.*codechobostudy\\.Application.*']
+,'.*home\\.*controller\\.HomeController.*'
+,'.*codechobostudy\\.Application.*']
 }
 
 

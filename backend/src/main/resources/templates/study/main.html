@@ -26,7 +26,7 @@
                     <strong>그룹명</strong>
                 </div>
                 <div class="col-lg-5 col-lg-offset-1 text-center">
-                    <strong>그룹 설명</strong>
+                        <strong>그룹 설명</strong>
                 </div>
                 <div class="col-lg-2 text-center">
                     <strong>리더</strong>
@@ -50,7 +50,9 @@
                 <%= studyName %>
             </div>
             <div class="col-lg-5 col-lg-offset-1">
-                <%= studyDesc %>
+                <a href="javascript:groupInfo('<=% id %>')">
+                    <%= studyDesc %>
+                </a>
             </div>
             <div class="col-lg-2">
                 <%= leader %>
@@ -106,6 +108,11 @@
         document.studyRegisterForm.action = "/study/find/";
         document.studyRegisterForm.submit();
     }
+
+    function groupInfo(id){
+
+    }
+
     (function ($){
         // 백본 모델
         var StudyGroupModel = Backbone.Model.extend({

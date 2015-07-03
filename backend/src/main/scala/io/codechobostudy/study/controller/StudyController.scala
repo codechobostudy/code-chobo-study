@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.codechobostudy.Application
 import io.codechobostudy.sample.service.SampleService
-import io.codechobostudy.study.domain.{StudyGroupMemberDomain, StudyGroupDomain}
+import io.codechobostudy.study.domain.{StudyMemberDomain, StudyGroupDomain}
 import io.codechobostudy.study.service.StudyService
 import io.codechobostudy.user.domain.UserDomain
 import io.codechobostudy.user.service.UserService
@@ -51,13 +51,10 @@ class StudyController {
 
   @RequestMapping(value = Array("/study/join/{id}"))
   def studyJoin(request: HttpServletRequest, model: Model, @PathVariable id : java.lang.Long): String = {
-    var member = new StudyGroupMemberDomain()
-    var studyGroup = studyService.getGroup(id)
+    var member = new StudyMemberDomain()
+    println(member.getId+"아이디아아아아")
     member.setMemberId( getUserId(request))
-    member.setStudyGroup(studyGroup)
-    studyService.join(member)
-    studyGroup.addMember(member)
-    println(studyGroup)
+    studyService.join(member,id)
     studyMain(request,model)
   }
 
@@ -79,6 +76,7 @@ class StudyController {
     if(userId == null){
       userId = "TEST_USER"
     }
+
     request.getSession().setAttribute("userId",userId)
     userId.toString()
   }

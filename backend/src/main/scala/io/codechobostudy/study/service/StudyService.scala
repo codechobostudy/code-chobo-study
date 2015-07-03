@@ -2,7 +2,7 @@ package io.codechobostudy.study.service
 
 import java.util
 
-import io.codechobostudy.study.domain.{StudyGroupMemberDomain, StudyGroupDomain}
+import io.codechobostudy.study.domain.{StudyMemberDomain, StudyGroupDomain}
 import io.codechobostudy.study.repository.{StudyMemberRepository, StudyRepository}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -40,8 +40,17 @@ class StudyService {
     studyRepository.findAll()
   }
 
-  def join(member: StudyGroupMemberDomain)={
-    studyMemberRepository.save(member)
+  def join(member: StudyMemberDomain, id : java.lang.Long)={
+    var group = studyRepository.findOne(id)
+    try{
+      group.addMember(member)
+      println(member.getId+"ID!!")
+      member.setStudyGroup(group)
+      println(studyRepository.findOne(id).toString+"group!!")
+      studyMemberRepository.save(member)
+    }catch{
+      case e : Exception => e.printStackTrace()
+    }
   }
 
 }

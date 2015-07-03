@@ -3,10 +3,14 @@ package io.codechobostudy.study.domain
 import java.util
 import javax.persistence._
 
+import com.fasterxml.jackson.annotation.{JsonManagedReference, JsonIgnore}
+import io.codechobostudy.study.domain.StudyMemberDomain
+
 import scala.beans.BeanProperty
 
 
 @Entity
+@Table(name="STUDY_GROUP")
 class StudyGroupDomain extends StudyBaseEntity{
 
   @BeanProperty
@@ -22,14 +26,14 @@ class StudyGroupDomain extends StudyBaseEntity{
   var leader: String =_
 
   @BeanProperty
-  @OneToMany( targetEntity = classOf[StudyGroupMemberDomain]  ,mappedBy = "studyGroup",cascade = Array(CascadeType.ALL), fetch = FetchType.LAZY )
-  var members : java.util.List[StudyGroupMemberDomain] = _
+  /* @OneToMany( targetEntity = classOf[StudyGroupMemberDomain]  ,mappedBy = "studyGroup",cascade = Array(CascadeType.ALL), fetch = FetchType.LAZY )*/
+  @OneToMany(mappedBy = "studyGroup",cascade = Array(CascadeType.ALL))
+  @JsonManagedReference
+  var members : util.List[StudyMemberDomain] =  new util.ArrayList[StudyMemberDomain]();
 
-  def addMember(studyGroupMemberDomain: StudyGroupMemberDomain) ={
+  def addMember(studyGroupMemberDomain: StudyMemberDomain) ={
     this.members.add(studyGroupMemberDomain)
   }
-
-  override def toString: String = "studyName : "+studyName+", studyDesc : "+studyDesc + "member : " +members
 
   private def getMembersString() :String ={
     if(members == null) return "NO"
