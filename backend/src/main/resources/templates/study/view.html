@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Study Group</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div id="studyApp" class="continer">
+        <div class="col-lg-3 well">
+            <form id="changeId" name="changeId" method="POST" th:action="@{/study/changeId}">
+                <div class="form-group">
+                <label for="userId">아이디</label>
+                    <input th:type="text" id="userId" name="userId" th:value="${session.userId}" />
+                    <button tyep="submit"> 변경 </button>
+                </div>
+            </form>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-lg" onclick="location.href='/study/'">
+                    목록으로
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="">
+                    가입하기
+                </button>
+            </div>
+        </div>
+        <div id="body" class="col-lg-8 col-lg-offset-1 well">
+            <form id="studyRegisterForm" name="studyRegisterForm" method="POST" th:action="@{/study/join}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="studyModalLabel">스터디그룹 조회</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div clas="form-group">
+                                <label for="studyName">스터디 그룹 이름</label>
+                                <div>
+                                    <p th:text="${data.studyName}"></p>
+                                </div>
+                            </div>
+                            <div clas="form-group">
+                                <label for="studyDesc">스터디 그룹 설명</label>
+                                <div>
+                                    <p id="studyDesc" th:text="${data.studyDesc}">
+                                    </p>
+                                </div>
+                            </div>
+                            <div clas="form-group">
+                                <label for="studyMember">스터디 참여자</label>
+                                <div id="studyMember">
+                                    <div th:each="member : ${data.members}"  id="studyGroupList" class="row">
+                                        <div class="col-lg-3 text-center">
+                                            <span th:text="${member.memberId}"></span>
+                                        </div>
+                                    </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer>
+            <div class="continer">
+                <div  id="footer" class="row">
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+
+<script type="text/javaScript">
+
+    function studyJoin(studyId){
+        $('#studyRegisterForm').attr("action","/study/join/"+studyId).submit();
+    }
+    function studyFind(){
+        document.studyRegisterForm.action = "/study/find/";
+        document.studyRegisterForm.submit();
+    }
+
+    function groupInfo(id){
+
+    }
+
+</script>
+</html>

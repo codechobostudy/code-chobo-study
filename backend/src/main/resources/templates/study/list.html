@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Study Group</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div id="studyApp" class="continer">
+        <div class="col-lg-3 well">
+            <form id="changeId" name="changeId" method="POST" th:action="@{/study/changeId}">
+                <div class="form-group">
+                <label for="userId">아이디</label>
+                    <input th:type="text" id="userId" name="userId" th:value="${session.userId}" />
+                    <button tyep="submit"> 변경 </button>
+                </div>
+            </form>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-lg" onclick="location.href='/study/createPage'">
+                    스터디그룹 생성
+                </button>
+            </div>
+        </div>
+        <div id="body" class="col-lg-8 col-lg-offset-1 well">
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <strong>그룹명</strong>
+                </div>
+                <div class="col-lg-5 col-lg-offset-1 text-center">
+                        <strong>그룹 설명</strong>
+                </div>
+                <div class="col-lg-2 text-center">
+                    <strong>리더</strong>
+                </div>
+                <div class="col-lg-1 text-center">
+                    &nbsp;
+                </div>
+            </div>
+            <div th:each="data : ${studyList}"  id="studyGroupList" class="row">
+                <div class="col-lg-3 text-center">
+                    <span th:text="${data.studyName}"></span>
+                </div>
+                <div class="col-lg-5 col-lg-offset-1 text-center">
+                    <a th:href="@{'/study/view/' + ${data.id} }">
+                        <span th:text="${data.studyDesc}"></span>
+                    </a>
+                </div>
+                <div class="col-lg-2 text-center">
+                    <span th:text="${data.leader}"></span>
+                </div>
+                <div class="col-lg-1 text-center">
+                    <a th:href="@{'/study/join/' + ${data.id}}"> 가입 </a>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="continer">
+                <div  id="footer" class="row">
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/jquery/1.11.3/jquery.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+
+<script type="text/javaScript">
+
+    function studyJoin(studyId){
+        $('#studyRegisterForm').attr("action","/study/join/"+studyId).submit();
+    }
+    function studyFind(){
+        document.studyRegisterForm.action = "/study/find/";
+        document.studyRegisterForm.submit();
+    }
+
+    function groupInfo(id){
+
+    }
+
+</script>
+</html>

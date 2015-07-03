@@ -27,11 +27,21 @@ class StudyController {
   @Autowired
   private var userService: UserService = _
 
-  @RequestMapping(value = Array("/study/main"))
+  @RequestMapping(value = Array("/study/"))
   def studyMain(request: HttpServletRequest, model:Model): String = {
     getUserId(request)
-//    model.addAttribute("studyList", studyService.getAllStudyGroup)
-    "/study/main"
+    model.addAttribute("studyList", studyService.getAllStudyGroup)
+    "/study/list"
+  }
+  @RequestMapping(value = Array("/study/createPage"))
+  def createPage(request: HttpServletRequest, model:Model): String = {
+    "/study/create"
+  }
+
+  @RequestMapping(value = Array("/study/view/{id}"))
+  def view(request: HttpServletRequest, model:Model, @PathVariable id : java.lang.Long): String = {
+    model.addAttribute("data", studyService.getGroup(id) )
+    "/study/view"
   }
 
 
@@ -55,6 +65,7 @@ class StudyController {
     println(member.getId+"아이디아아아아")
     member.setMemberId( getUserId(request))
     studyService.join(member,id)
+
     studyMain(request,model)
   }
 
